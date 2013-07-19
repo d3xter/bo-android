@@ -6,12 +6,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Binder;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.PowerManager;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.*;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import org.blitzortung.android.alarm.AlarmParameters;
+import org.blitzortung.android.alarm.factory.AlarmObjectFactory;
+import org.blitzortung.android.app.controller.LocationHandler;
+import org.blitzortung.android.app.controller.NotificationHandler;
 import org.blitzortung.android.app.view.PreferenceKey;
 import org.blitzortung.android.data.DataChannel;
 import org.blitzortung.android.data.DataHandler;
@@ -49,6 +52,8 @@ public class DataService extends Service implements Runnable, SharedPreferences.
     private final IBinder binder = new DataServiceBinder();
 
     private AlarmManager alarmManager;
+    
+    private org.blitzortung.android.alarm.AlarmManager alarmProcessor;
 
     private PendingIntent pendingIntent;
 
@@ -109,6 +114,18 @@ public class DataService extends Service implements Runnable, SharedPreferences.
         super.onCreate();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        updateSharedPreferences(preferences);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(Main.LOG_TAG, "DataService.onDestroy()");
+        super.onDestroy();
+
+        handler.removeCallbacks(this);
+    }
+
+    public void updateSharedPreferences(SharedPreferences preferences) {
         preferences.registerOnSharedPreferenceChangeListener(this);
 
         onSharedPreferenceChanged(preferences, PreferenceKey.QUERY_PERIOD);
@@ -121,18 +138,41 @@ public class DataService extends Service implements Runnable, SharedPreferences.
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(Main.LOG_TAG, "DataService.onStartCommand() startId: " + startId + " " + intent);
 
-        if (intent != null && RETRIEVE_DATA_ACTION.equals(intent.getAction())) {
-            if (!backgroundOperation) {
-                discardAlarm();
-            } else {
-                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-                wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG);
-                wakeLock.acquire(20000);
+        if (intent != null) {
+            if (intent.getFlags() == Intent.FLAG_ACTIVITY_NEW_TASK) {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                int backgroundPeriod = Integer.valueOf(sharedPreferences.getString(PreferenceKey.BACKGROUND_QUERY_PERIOD.toString(), "0"));
+                if (backgroundPeriod > 0) {
+                    Log.v(Main.LOG_TAG, "DataService.onStartCommand() start service without main app");
+                    PackageInfo packageInfo = null;
+                    try {
+                        packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        throw new IllegalStateException(e);
+                    }
+                    if (packageInfo != null) {
+                        dataHandler = new DataHandler(sharedPreferences, packageInfo);
+                        LocationHandler locationHandler = new LocationHandler(this, sharedPreferences);
+                        alarmProcessor = new org.blitzortung.android.alarm.AlarmManager(locationHandler, sharedPreferences, this, (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE), new NotificationHandler(new Main()), new AlarmObjectFactory(), new AlarmParameters());
+                        onResume();
+                    }
+                } else {
+                    Log.v(Main.LOG_TAG, "DataService.onStartCommand() do not start service");
+                }
+                
+            } else  if (RETRIEVE_DATA_ACTION.equals(intent.getAction())) {
+                if (!backgroundOperation) {
+                    discardAlarm();
+                } else {
+                    PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                    wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG);
+                    wakeLock.acquire(20000);
 
-                Log.v(Main.LOG_TAG, "DataService.onStartCommand() acquire wake lock " + wakeLock);
+                    Log.v(Main.LOG_TAG, "DataService.onStartCommand() acquire wake lock " + wakeLock);
 
-                handler.removeCallbacks(this);
-                handler.post(this);
+                    handler.removeCallbacks(this);
+                    handler.post(this);
+                }
             }
         }
 
@@ -299,6 +339,5 @@ public class DataService extends Service implements Runnable, SharedPreferences.
             alarmManager = null;
         }
     }
-
 
 }

@@ -1,14 +1,20 @@
 package org.blitzortung.android.app;
 
 import android.app.Dialog;
-import android.content.*;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.format.DateFormat;
@@ -83,7 +89,9 @@ public class Main extends OwnMapActivity implements DataListener, OnSharedPrefer
     private ButtonColumnHandler<ImageButton> buttonColumnHandler;
 
     private HistoryController historyController;
+
     private DataService dataService;
+
     private ServiceConnection serviceConnection;
 
     @Override
@@ -180,38 +188,10 @@ public class Main extends OwnMapActivity implements DataListener, OnSharedPrefer
         setupCustomViews();
 
         onSharedPreferenceChanged(preferences, PreferenceKey.MAP_TYPE, PreferenceKey.MAP_FADE, PreferenceKey.SHOW_LOCATION,
-                PreferenceKey.NOTIFICATION_DISTANCE_LIMIT, PreferenceKey.SIGNALING_DISTANCE_LIMIT, PreferenceKey.DO_NOT_SLEEP, PreferenceKey.SHOW_PARTICIPANTS);
+                PreferenceKey.NOTIFICATION_DISTANCE_LIMIT, PreferenceKey.SIGNALING_DISTANCE_LIMIT, PreferenceKey.DO_NOT_SLEEP,
+                PreferenceKey.SHOW_PARTICIPANTS, PreferenceKey.BACKGROUND_QUERY_PERIOD);
 
-        createAndBindToDataService();
-        
         getMapView().invalidate();
-    }
-
-    private void createAndBindToDataService() {
-        final Intent serviceIntent = new Intent(this, DataService.class);
-
-        startService(serviceIntent);
-
-        serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                dataService = ((DataService.DataServiceBinder) iBinder).getService();
-                Log.i(Main.LOG_TAG, "Main.ServiceConnection.onServiceConnected() " + dataService);
-                dataService.setListener(Main.this);
-                dataService.setDataHandler(dataHandler);
-                if (!persistor.hasCurrentResult()) {
-                    dataService.restart();
-                }
-                dataService.onResume();
-                historyController.setDataService(dataService);
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName componentName) {
-            }
-        };
-
-        bindService(serviceIntent, serviceConnection, 0);
     }
 
     private void setupDebugModeButton() {
@@ -418,7 +398,7 @@ public class Main extends OwnMapActivity implements DataListener, OnSharedPrefer
         super.onDestroy();
         Log.i(LOG_TAG, "Main: onDestroy()");
 
-        unbindService(serviceConnection);
+        unbindDataService();
     }
 
     @Override
@@ -595,6 +575,87 @@ public class Main extends OwnMapActivity implements DataListener, OnSharedPrefer
                     getWindow().clearFlags(flag);
                 }
                 break;
+
+            case BACKGROUND_QUERY_PERIOD:
+                int backgroundQueryPeriod = Integer.valueOf(sharedPreferences.getString(PreferenceKey.BACKGROUND_QUERY_PERIOD.toString(), "-1"));
+
+                if (dataService == null) {
+                    if (backgroundQueryPeriod > 0) {
+                        Log.i(Main.LOG_TAG, "Main.onSharedPreferencesChange() create data service");
+                        createAndBindToDataService();
+                    } else {
+                        Log.i(Main.LOG_TAG, "Main.onSharedPreferencesChange() create data instance");
+                        startLocalDataService(sharedPreferences);
+                    }
+                } else {
+                    if (backgroundQueryPeriod > 0) {
+                        if (serviceConnection == null) {
+                            Log.i(Main.LOG_TAG, "Main.onSharedPreferencesChange() switch to data service");
+                            createAndBindToDataService();
+                        }
+                    } else {
+                        Log.i(Main.LOG_TAG, "Main.onSharedPreferencesChange() switch to data instance");
+                        unbindDataService();
+                        final Intent serviceIntent = new Intent(this, DataService.class);
+                        stopService(serviceIntent);
+
+                        if (!persistor.hasDataService()) {
+                            startLocalDataService(sharedPreferences);
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private void startLocalDataService(SharedPreferences sharedPreferences) {
+        if (persistor.hasDataService()) {
+            dataService = persistor.getDataService();
+        } else {
+            dataService = new DataService();
+            persistor.setDataService(dataService);
+        }
+        dataService.setDataHandler(dataHandler);
+        dataService.updateSharedPreferences(sharedPreferences);
+        dataService.setListener(this);
+        historyController.setDataService(dataService);
+    }
+
+    private void createAndBindToDataService() {
+        final Intent serviceIntent = new Intent(this, DataService.class);
+
+        startService(serviceIntent);
+
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                dataService = ((DataService.DataServiceBinder) iBinder).getService();
+                Log.i(Main.LOG_TAG, String.format("Main.ServiceConnection.onServiceConnected() %s (%s)", componentName, dataService));
+                dataService.setListener(Main.this);
+                dataService.setDataHandler(dataHandler);
+                if (!persistor.hasCurrentResult()) {
+                    dataService.restart();
+                }
+                dataService.onResume();
+                historyController.setDataService(dataService);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+            }
+        };
+
+        bindService(serviceIntent, serviceConnection, 0);
+    }
+
+    private void unbindDataService() {
+        if (serviceConnection != null) {
+            try {
+                unbindService(serviceConnection);
+            } catch (IllegalArgumentException e) {
+            } finally {
+                serviceConnection = null;
+            }
         }
     }
 

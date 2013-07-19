@@ -29,6 +29,8 @@ public class Persistor {
 
     private DataResult currentResult;
 
+    private DataService dataService;
+
     public LocationHandler getLocationHandler() {
         return locationHandler;
     }
@@ -81,5 +83,17 @@ public class Persistor {
 
     public boolean hasCurrentResult() {
         return currentResult != null;
+    }
+    
+    public boolean hasDataService() {
+        return dataService != null;
+    }
+
+    public DataService getDataService() {
+        return dataService;
+    }
+
+    public void setDataService(DataService dataService) {
+        this.dataService = dataService;
     }
 }

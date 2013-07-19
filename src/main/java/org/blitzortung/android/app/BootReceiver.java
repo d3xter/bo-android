@@ -6,7 +6,7 @@ import android.content.Intent;
 
 public class BootReceiver extends BroadcastReceiver{
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         Intent bootIntent = new Intent(context, DataService.class);
         bootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(bootIntent);
