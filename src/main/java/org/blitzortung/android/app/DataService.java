@@ -182,7 +182,11 @@ public class DataService extends Service implements Runnable, SharedPreferences.
     public void releaseWakeLock() {
         if (wakeLock != null && wakeLock.isHeld()) {
             Log.v(Main.LOG_TAG, "DataService.releaseWakeLock() " + wakeLock);
-            wakeLock.release();
+            try {
+                wakeLock.release();
+            } catch (RuntimeException e) {
+                Log.v(Main.LOG_TAG, "DataService.releaseWakeLock() failed: " + e.toString());
+            }
         }
         wakeLock = null;
     }
