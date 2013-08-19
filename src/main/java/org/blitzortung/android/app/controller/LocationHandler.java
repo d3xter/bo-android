@@ -9,24 +9,27 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import org.blitzortung.android.app.Main;
 import org.blitzortung.android.app.R;
-import org.blitzortung.android.app.view.PreferenceKey;
+import org.blitzortung.android.app.preference.PreferenceKey;
+import org.blitzortung.android.app.preference.SharedPreferencesWrapper;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class LocationHandler implements SharedPreferences.OnSharedPreferenceChangeListener, LocationListener, GpsStatus.Listener {
-
-    private final Context context;
+@Singleton
+public class LocationHandler implements SharedPreferencesWrapper.OnSharedPreferenceChangeListener, LocationListener, GpsStatus.Listener {
 
     public static interface Listener {
         void onLocationChanged(Location location);
     }
 
-    public static enum Provider {
+    public static enum LocationProvider {
         NETWORK(LocationManager.NETWORK_PROVIDER),
         GPS(LocationManager.GPS_PROVIDER),
         PASSIVE(LocationManager.PASSIVE_PROVIDER),
@@ -34,7 +37,7 @@ public class LocationHandler implements SharedPreferences.OnSharedPreferenceChan
 
         private String type;
 
-        private Provider(String type) {
+        private LocationProvider(String type) {
             this.type = type;
         }
 
@@ -42,10 +45,10 @@ public class LocationHandler implements SharedPreferences.OnSharedPreferenceChan
             return type;
         }
 
-        private static Map<String, Provider> stringToValueMap = new HashMap<String, Provider>();
+        private static Map<String, LocationProvider> stringToValueMap = new HashMap<String, LocationProvider>();
 
         static {
-            for (Provider key : Provider.values()) {
+            for (LocationProvider key : LocationProvider.values()) {
                 String keyString = key.getType();
                 if (stringToValueMap.containsKey(keyString)) {
                     throw new IllegalStateException(String.format("key value '%s' already defined", keyString));
@@ -54,7 +57,7 @@ public class LocationHandler implements SharedPreferences.OnSharedPreferenceChan
             }
         }
 
-        public static Provider fromString(String string) {
+        public static LocationProvider fromString(String string) {
             return stringToValueMap.get(string);
         }
     }
@@ -64,26 +67,31 @@ public class LocationHandler implements SharedPreferences.OnSharedPreferenceChan
     }
 
     public void onResume() {
-        enableProvider(provider);
+        enableProvider(locationProvider);
     }
 
     private final LocationManager locationManager;
 
-    private Provider provider;
+    private final Provider<Context> contextProvider;
+
+    private LocationProvider locationProvider;
 
     private final Location location;
 
     private Set<Listener> listeners = new HashSet<Listener>();
 
-    public LocationHandler(Context context, SharedPreferences sharedPreferences) {
-        this.context = context;
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+    @Inject
+    public LocationHandler(LocationManager locationManager, SharedPreferencesWrapper sharedPreferences, Provider<Context> contextProvider) {
+        this.locationManager = locationManager;
         locationManager.addGpsStatusListener(this);
+        
         location = new Location("");
         invalidateLocation();
 
-        onSharedPreferenceChanged(sharedPreferences, PreferenceKey.LOCATION_MODE);
+        onSharedPreferenceChanged(sharedPreferences.get(), PreferenceKey.LOCATION_MODE);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+        this.contextProvider = contextProvider;
     }
 
     @Override
@@ -106,16 +114,12 @@ public class LocationHandler implements SharedPreferences.OnSharedPreferenceChan
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String keyString) {
-        onSharedPreferenceChanged(sharedPreferences, PreferenceKey.fromString(keyString));
-    }
-
-    private void onSharedPreferenceChanged(SharedPreferences sharedPreferences, PreferenceKey key) {
+    public void onSharedPreferenceChanged(SharedPreferencesWrapper sharedPreferences, PreferenceKey key) {
         switch (key) {
             case LOCATION_MODE:
-                Provider newProvider = Provider.fromString(sharedPreferences.getString(key.toString(), Provider.NETWORK.getType()));
-                if (newProvider != provider) {
-                    updateProvider(newProvider, sharedPreferences);
+                LocationProvider newLocationProvider = LocationProvider.fromString(sharedPreferences.getString(key.toString(), LocationProvider.NETWORK.getType()));
+                if (newLocationProvider != locationProvider) {
+                    updateProvider(newLocationProvider, sharedPreferences);
                 }
                 break;
 
@@ -148,16 +152,16 @@ public class LocationHandler implements SharedPreferences.OnSharedPreferenceChan
         }
     }
 
-    private void updateProvider(Provider newProvider, SharedPreferences sharedPreferences) {
-        if (newProvider == Provider.MANUAL) {
+    private void updateProvider(LocationProvider newLocationProvider, SharedPreferences sharedPreferences) {
+        if (newLocationProvider == LocationProvider.MANUAL) {
             locationManager.removeUpdates(this);
             updateManualLongitude(sharedPreferences);
             updateManualLatitude(sharedPreferences);
-            location.setProvider(newProvider.getType());
+            location.setProvider(newLocationProvider.getType());
         } else {
             invalidateLocationAndSendLocationUpdate();
         }
-        enableProvider(newProvider);
+        enableProvider(newLocationProvider);
     }
 
     private void invalidateLocationAndSendLocationUpdate() {
@@ -170,17 +174,17 @@ public class LocationHandler implements SharedPreferences.OnSharedPreferenceChan
         location.setLatitude(Double.NaN);
     }
 
-    private void enableProvider(Provider newProvider) {
+    private void enableProvider(LocationProvider newLocationProvider) {
         locationManager.removeUpdates(this);
-        if (newProvider != null && newProvider != Provider.MANUAL) {
-            if (!locationManager.getAllProviders().contains(newProvider.getType())) {
-                Toast toast = Toast.makeText(context, String.format(context.getResources().getText(R.string.location_provider_not_available).toString(), newProvider.toString()), 5000);
+        if (newLocationProvider != null && newLocationProvider != LocationProvider.MANUAL) {
+            if (!locationManager.getAllProviders().contains(newLocationProvider.getType())) {
+                Toast toast = Toast.makeText(contextProvider.get(), String.format(contextProvider.get().getResources().getText(R.string.location_provider_not_available).toString(), newLocationProvider.toString()), 5000);
                 toast.show();
                 return;
             }
-            locationManager.requestLocationUpdates(newProvider.getType(), provider == Provider.GPS ? 1000 : 10000, 10, this);
+            locationManager.requestLocationUpdates(newLocationProvider.getType(), locationProvider == LocationProvider.GPS ? 1000 : 10000, 10, this);
         }
-        provider = newProvider;
+        locationProvider = newLocationProvider;
     }
 
     private void sendLocationUpdate() {
@@ -211,7 +215,7 @@ public class LocationHandler implements SharedPreferences.OnSharedPreferenceChan
     @Override
     public void onGpsStatusChanged(int event) {
 
-        if (provider == Provider.GPS) {
+        if (locationProvider == LocationProvider.GPS) {
             switch (event) {
                 case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                     Location lastKnownGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);

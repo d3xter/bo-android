@@ -9,11 +9,14 @@ import android.graphics.drawable.shapes.Shape;
 import android.location.Location;
 import android.preference.PreferenceManager;
 import com.google.android.maps.ItemizedOverlay;
+import com.google.inject.Inject;
 import org.blitzortung.android.app.R;
 import org.blitzortung.android.app.controller.LocationHandler;
-import org.blitzortung.android.app.view.PreferenceKey;
+import org.blitzortung.android.app.preference.PreferenceKey;
 import org.blitzortung.android.map.OwnMapView;
 import org.blitzortung.android.map.components.LayerOverlayComponent;
+import org.blitzortung.android.map.overlay.item.OwnLocationOverlayItem;
+import org.blitzortung.android.map.overlay.shape.OwnLocationShape;
 
 public class OwnLocationOverlay extends ItemizedOverlay<OwnLocationOverlayItem> implements LocationHandler.Listener, SharedPreferences.OnSharedPreferenceChangeListener, LayerOverlay {
 
@@ -28,20 +31,22 @@ public class OwnLocationOverlay extends ItemizedOverlay<OwnLocationOverlayItem> 
 
     private OwnLocationOverlayItem item;
 
-    private final LocationHandler locationManager;
+    private final LocationHandler locationHandler;
 
     private int zoomLevel;
 
-    public OwnLocationOverlay(Context context, LocationHandler locationHandler, OwnMapView mapView) {
+    @Inject
+    public OwnLocationOverlay(LayerOverlayComponent layerOverlayComponent, Context context, LocationHandler locationHandler, OwnMapView mapView) {
         super(DEFAULT_DRAWABLE);
 
-        layerOverlayComponent = new LayerOverlayComponent(context.getResources().getString(R.string.own_location_layer));
-
+        this.layerOverlayComponent = layerOverlayComponent;
+        this.layerOverlayComponent.setName(context.getResources().getString(R.string.own_location_layer));
+        
         item = null;
 
         populate();
 
-        this.locationManager = locationHandler;
+        this.locationHandler = locationHandler;
         locationHandler.requestUpdates(this);
 
         mapView.addZoomListener(new OwnMapView.ZoomListener() {
@@ -97,11 +102,11 @@ public class OwnLocationOverlay extends ItemizedOverlay<OwnLocationOverlayItem> 
     }
 
     public void enableOwnLocation() {
-        locationManager.requestUpdates(this);
+        locationHandler.requestUpdates(this);
     }
 
     public void disableOwnLocation() {
-        locationManager.removeUpdates(this);
+        locationHandler.removeUpdates(this);
         
         item = null;
         populate();

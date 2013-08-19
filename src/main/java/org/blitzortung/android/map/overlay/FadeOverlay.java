@@ -5,7 +5,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import org.blitzortung.android.map.overlay.color.ColorHandler;
+import com.google.inject.Inject;
+import org.blitzortung.android.map.color.ColorHandler;
 
 public class FadeOverlay extends Overlay {
 
@@ -13,6 +14,7 @@ public class FadeOverlay extends Overlay {
 
     private int alphaValue = 0;
 
+    @Inject
     public FadeOverlay(ColorHandler colorHandler) {
         this.colorHandler = colorHandler;
     }

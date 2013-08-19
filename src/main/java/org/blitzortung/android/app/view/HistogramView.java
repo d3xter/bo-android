@@ -11,7 +11,7 @@ import org.blitzortung.android.app.helper.ViewHelper;
 import org.blitzortung.android.data.DataListener;
 import org.blitzortung.android.data.provider.DataResult;
 import org.blitzortung.android.map.overlay.StrokesOverlay;
-import org.blitzortung.android.map.overlay.color.ColorHandler;
+import org.blitzortung.android.map.color.ColorHandler;
 
 public class HistogramView extends View implements DataListener {
 

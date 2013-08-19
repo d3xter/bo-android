@@ -33,7 +33,7 @@ import org.blitzortung.android.app.controller.LocationHandler;
 import org.blitzortung.android.app.view.AlarmView;
 import org.blitzortung.android.app.view.HistogramView;
 import org.blitzortung.android.app.view.LegendView;
-import org.blitzortung.android.app.view.PreferenceKey;
+import org.blitzortung.android.app.preference.PreferenceKey;
 import org.blitzortung.android.app.view.components.StatusComponent;
 import org.blitzortung.android.data.DataHandler;
 import org.blitzortung.android.data.DataListener;
@@ -110,7 +110,6 @@ public class Main extends OwnMapActivity implements DataListener, OnSharedPrefer
         OwnMapView mapView = (OwnMapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         setMapView(mapView);
-
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);

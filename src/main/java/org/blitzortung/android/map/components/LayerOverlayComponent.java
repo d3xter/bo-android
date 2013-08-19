@@ -4,16 +4,22 @@ import org.blitzortung.android.map.overlay.LayerOverlay;
 
 public class LayerOverlayComponent implements LayerOverlay {
 
-    private final String name;
+    public static final String DEFAULT_NAME = "<undefined>";
+    private String name;
     private boolean visible;
     private boolean enabled;
 
-    public LayerOverlayComponent(String name) {
-        this.name = name;
+    public LayerOverlayComponent() {
+        name = DEFAULT_NAME;
         enabled = true;
         visible = true;
     }
 
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     @Override
     public String getName() {
         return name;

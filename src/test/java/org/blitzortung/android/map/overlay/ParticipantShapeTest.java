@@ -2,6 +2,7 @@ package org.blitzortung.android.map.overlay;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import org.blitzortung.android.map.overlay.shape.ParticipantShape;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

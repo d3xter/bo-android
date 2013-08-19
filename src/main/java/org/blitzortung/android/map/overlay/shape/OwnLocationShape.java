@@ -1,4 +1,4 @@
-package org.blitzortung.android.map.overlay;
+package org.blitzortung.android.map.overlay.shape;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

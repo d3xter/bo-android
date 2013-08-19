@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import org.blitzortung.android.app.controller.LocationHandler;
-import org.blitzortung.android.app.view.PreferenceKey;
+import org.blitzortung.android.app.preference.PreferenceKey;
 import org.blitzortung.android.data.provider.DataProviderType;
 
 public class Preferences extends PreferenceActivity implements OnSharedPreferenceChangeListener {
@@ -52,8 +52,8 @@ public class Preferences extends PreferenceActivity implements OnSharedPreferenc
                 break;
 
             case LOCATION_MODE:
-                LocationHandler.Provider locationProvider = LocationHandler.Provider.fromString(sharedPreferences.getString(key.toString(), "NETWORK"));
-                enableManualLocationMode(locationProvider == LocationHandler.Provider.MANUAL);
+                LocationHandler.LocationProvider locationLocationProvider = LocationHandler.LocationProvider.fromString(sharedPreferences.getString(key.toString(), "NETWORK"));
+                enableManualLocationMode(locationLocationProvider == LocationHandler.LocationProvider.MANUAL);
                 break;
 
         }

@@ -12,7 +12,7 @@ import org.blitzortung.android.alarm.object.AlarmSector;
 import org.blitzortung.android.alarm.object.AlarmStatus;
 import org.blitzortung.android.app.controller.LocationHandler;
 import org.blitzortung.android.app.controller.NotificationHandler;
-import org.blitzortung.android.app.view.PreferenceKey;
+import org.blitzortung.android.app.preference.PreferenceKey;
 import org.blitzortung.android.data.beans.Stroke;
 import org.blitzortung.android.util.MeasurementSystem;
 import org.junit.Before;

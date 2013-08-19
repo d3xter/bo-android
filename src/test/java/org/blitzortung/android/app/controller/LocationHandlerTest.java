@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
 import com.google.common.collect.Lists;
-import org.blitzortung.android.app.view.PreferenceKey;
+import org.blitzortung.android.app.preference.PreferenceKey;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,20 +51,20 @@ public class LocationHandlerTest {
     
     @Test
     public void testInitialization() {
-        verify(sharedPreferences, times(1)).getString(PreferenceKey.LOCATION_MODE.toString(), LocationHandler.Provider.NETWORK.getType());
+        verify(sharedPreferences, times(1)).getString(PreferenceKey.LOCATION_MODE.toString(), LocationHandler.LocationProvider.NETWORK.getType());
         verify(sharedPreferences, times(1)).registerOnSharedPreferenceChangeListener(locationHandler);
         verify(locationManager, times(1)).addGpsStatusListener(locationHandler);
         verify(locationManager, times(1)).removeUpdates(locationHandler);
-        verify(locationManager, times(1)).requestLocationUpdates(LocationHandler.Provider.NETWORK.getType(), 10000, 10, locationHandler);       
+        verify(locationManager, times(1)).requestLocationUpdates(LocationHandler.LocationProvider.NETWORK.getType(), 10000, 10, locationHandler);       
     }
 
     @Test
     public void testSetUnavailableProvider() {
-        when(sharedPreferences.getString(eq(PreferenceKey.LOCATION_MODE.toString()), anyString())).thenReturn(LocationHandler.Provider.PASSIVE.getType());
+        when(sharedPreferences.getString(eq(PreferenceKey.LOCATION_MODE.toString()), anyString())).thenReturn(LocationHandler.LocationProvider.PASSIVE.getType());
         locationHandler.requestUpdates(locationListener);
         locationHandler.onSharedPreferenceChanged(sharedPreferences, PreferenceKey.LOCATION_MODE.toString());
 
-        verify(sharedPreferences, times(2)).getString(PreferenceKey.LOCATION_MODE.toString(), LocationHandler.Provider.NETWORK.getType());
+        verify(sharedPreferences, times(2)).getString(PreferenceKey.LOCATION_MODE.toString(), LocationHandler.LocationProvider.NETWORK.getType());
         verify(sharedPreferences, times(1)).registerOnSharedPreferenceChangeListener(locationHandler);
         verify(locationListener, times(1)).onLocationChanged(null);
         verify(locationManager, times(1)).addGpsStatusListener(locationHandler);
@@ -78,7 +78,7 @@ public class LocationHandlerTest {
         locationHandler.requestUpdates(locationListener);
         locationHandler.onSharedPreferenceChanged(sharedPreferences, PreferenceKey.LOCATION_MODE.toString());
 
-        verify(sharedPreferences, times(2)).getString(PreferenceKey.LOCATION_MODE.toString(), LocationHandler.Provider.NETWORK.getType());
+        verify(sharedPreferences, times(2)).getString(PreferenceKey.LOCATION_MODE.toString(), LocationHandler.LocationProvider.NETWORK.getType());
         verify(sharedPreferences, times(1)).registerOnSharedPreferenceChangeListener(locationHandler);
         verify(locationListener, times(1)).onLocationChanged(null);
         verify(locationManager, times(1)).addGpsStatusListener(locationHandler);
@@ -87,6 +87,6 @@ public class LocationHandlerTest {
     }
     
     private void setLocationProviderPrefs(String provider) {
-        when(sharedPreferences.getString(PreferenceKey.LOCATION_MODE.toString(), LocationHandler.Provider.NETWORK.getType())).thenReturn(provider);
+        when(sharedPreferences.getString(PreferenceKey.LOCATION_MODE.toString(), LocationHandler.LocationProvider.NETWORK.getType())).thenReturn(provider);
     }
 }

@@ -42,6 +42,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.roboguice</groupId>
+            <artifactId>roboguice</artifactId>
+            <version>2.0</version>
+        </dependency>
+        
         <!-- Make sure this is below the android dependencies -->
         <dependency>
             <groupId>org.mockito</groupId>

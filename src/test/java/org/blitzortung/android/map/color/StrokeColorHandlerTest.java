@@ -1,7 +1,7 @@
-package org.blitzortung.android.map.overlay.color;
+package org.blitzortung.android.map.color;
 
 import android.content.SharedPreferences;
-import org.blitzortung.android.app.view.PreferenceKey;
+import org.blitzortung.android.app.preference.PreferenceKey;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

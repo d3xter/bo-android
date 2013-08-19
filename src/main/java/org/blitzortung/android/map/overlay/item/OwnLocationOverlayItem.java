@@ -1,4 +1,4 @@
-package org.blitzortung.android.map.overlay;
+package org.blitzortung.android.map.overlay.item;
 
 import android.location.Location;
 import com.google.android.maps.OverlayItem;

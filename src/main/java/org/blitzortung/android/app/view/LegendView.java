@@ -10,7 +10,7 @@ import android.view.View;
 import org.blitzortung.android.app.R;
 import org.blitzortung.android.app.helper.ViewHelper;
 import org.blitzortung.android.map.overlay.StrokesOverlay;
-import org.blitzortung.android.map.overlay.color.ColorHandler;
+import org.blitzortung.android.map.color.ColorHandler;
 
 public class LegendView extends View {
 

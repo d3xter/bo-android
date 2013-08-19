@@ -1,8 +1,11 @@
 package org.blitzortung.android.map.overlay;
 
-import android.content.Context;
-import android.graphics.*;
+import android.content.res.Resources;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.text.format.DateFormat;
@@ -15,9 +18,9 @@ import org.blitzortung.android.data.TimeIntervalWithOffset;
 import org.blitzortung.android.data.beans.AbstractStroke;
 import org.blitzortung.android.data.beans.RasterParameters;
 import org.blitzortung.android.data.beans.Stroke;
+import org.blitzortung.android.map.color.ColorHandler;
+import org.blitzortung.android.map.color.StrokeColorHandler;
 import org.blitzortung.android.map.components.LayerOverlayComponent;
-import org.blitzortung.android.map.overlay.color.ColorHandler;
-import org.blitzortung.android.map.overlay.color.StrokeColorHandler;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,10 +55,12 @@ public class StrokesOverlay extends PopupOverlay<StrokeOverlayItem> implements T
         DefaultDrawable = new ShapeDrawable(shape);
     }
 
-    public StrokesOverlay(Context context, StrokeColorHandler colorHandler) {
+    public StrokesOverlay(LayerOverlayComponent layerOverlayComponent, Resources resources, StrokeColorHandler colorHandler) {
         super(boundCenter(DefaultDrawable));
 
-        layerOverlayComponent = new LayerOverlayComponent(context.getResources().getString(R.string.strokes_layer));
+        this.layerOverlayComponent = layerOverlayComponent;
+        this.layerOverlayComponent.setName(resources.getString(R.string.strokes_layer));
+        
         this.colorHandler = colorHandler;
 
         strokes = new ArrayList<StrokeOverlayItem>();

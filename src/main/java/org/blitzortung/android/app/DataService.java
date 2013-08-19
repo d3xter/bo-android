@@ -15,7 +15,7 @@ import org.blitzortung.android.alarm.AlarmParameters;
 import org.blitzortung.android.alarm.factory.AlarmObjectFactory;
 import org.blitzortung.android.app.controller.LocationHandler;
 import org.blitzortung.android.app.controller.NotificationHandler;
-import org.blitzortung.android.app.view.PreferenceKey;
+import org.blitzortung.android.app.preference.PreferenceKey;
 import org.blitzortung.android.data.DataChannel;
 import org.blitzortung.android.data.DataHandler;
 import org.blitzortung.android.util.Period;

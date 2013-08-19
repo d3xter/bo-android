@@ -2,6 +2,7 @@ package org.blitzortung.android.map.overlay;
 
 import android.location.Location;
 import com.google.android.maps.GeoPoint;
+import org.blitzortung.android.map.overlay.item.OwnLocationOverlayItem;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

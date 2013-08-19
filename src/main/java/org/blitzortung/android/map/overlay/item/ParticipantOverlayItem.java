@@ -1,4 +1,4 @@
-package org.blitzortung.android.map.overlay;
+package org.blitzortung.android.map.overlay.item;
 
 import com.google.android.maps.OverlayItem;
 import org.blitzortung.android.data.Coordsys;

@@ -1,10 +1,12 @@
-package org.blitzortung.android.map.overlay.color;
+package org.blitzortung.android.map.color;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import org.blitzortung.android.app.view.PreferenceKey;
+import com.google.inject.Singleton;
+import org.blitzortung.android.app.preference.PreferenceKey;
 import org.blitzortung.android.data.TimeIntervalWithOffset;
 
+@Singleton
 public abstract class ColorHandler {
 
     private final SharedPreferences preferences;

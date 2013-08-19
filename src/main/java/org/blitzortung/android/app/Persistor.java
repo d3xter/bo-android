@@ -14,8 +14,8 @@ import org.blitzortung.android.data.DataHandler;
 import org.blitzortung.android.data.provider.DataResult;
 import org.blitzortung.android.map.overlay.ParticipantsOverlay;
 import org.blitzortung.android.map.overlay.StrokesOverlay;
-import org.blitzortung.android.map.overlay.color.ParticipantColorHandler;
-import org.blitzortung.android.map.overlay.color.StrokeColorHandler;
+import org.blitzortung.android.map.color.ParticipantColorHandler;
+import org.blitzortung.android.map.color.StrokeColorHandler;
 
 public class Persistor {
 

@@ -1,17 +1,20 @@
 package org.blitzortung.android.map.overlay;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.Shape;
 import android.util.Log;
+import com.google.inject.Inject;
 import org.blitzortung.android.app.Main;
 import org.blitzortung.android.app.R;
 import org.blitzortung.android.data.beans.Participant;
 import org.blitzortung.android.data.beans.Participant.State;
+import org.blitzortung.android.map.color.ParticipantColorHandler;
 import org.blitzortung.android.map.components.LayerOverlayComponent;
-import org.blitzortung.android.map.overlay.color.ParticipantColorHandler;
+import org.blitzortung.android.map.overlay.item.ParticipantOverlayItem;
+import org.blitzortung.android.map.overlay.shape.ParticipantShape;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -38,10 +41,12 @@ public class ParticipantsOverlay extends PopupOverlay<ParticipantOverlayItem> im
     // VisibleForTesting
     protected int shapeSize;
 
-    public ParticipantsOverlay(Context context, ParticipantColorHandler colorHandler) {
+    @Inject
+    public ParticipantsOverlay(LayerOverlayComponent layerOverlayComponent, Resources resources, ParticipantColorHandler colorHandler) {
         super(boundCenter(DefaultDrawable));
 
-        layerOverlayComponent = new LayerOverlayComponent(context.getResources().getString(R.string.participants_layer));
+        this.layerOverlayComponent = layerOverlayComponent;
+        this.layerOverlayComponent.setName(resources.getString(R.string.participants_layer));
 
         this.colorHandler = colorHandler;
 
