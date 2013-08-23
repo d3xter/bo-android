@@ -148,10 +148,10 @@ public class DataHandler implements OnSharedPreferenceChangeListener {
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, PreferenceKey key) {
+
         switch (key) {
             case DATA_SOURCE:
-                String providerTypeString = sharedPreferences.getString(key.toString(), DataProviderType.RPC.toString());
-                DataProviderType providerType = DataProviderType.valueOf(providerTypeString.toUpperCase());
+                DataProviderType providerType = DataProviderType.valueOf(key.getValue(sharedPreferences).toUpperCase());
                 dataProvider = providerType.getProvider();
                 dataProvider.setPackageInfo(pInfo);
 
@@ -161,31 +161,31 @@ public class DataHandler implements OnSharedPreferenceChangeListener {
                 break;
 
             case USERNAME:
-                username = sharedPreferences.getString(key.toString(), "");
+                username = key.getValue(sharedPreferences);
                 break;
 
             case PASSWORD:
-                password = sharedPreferences.getString(key.toString(), "");
+                password = key.getValue(sharedPreferences);
                 break;
 
             case RASTER_SIZE:
-                preferencesRasterBaselength = Integer.parseInt(sharedPreferences.getString(key.toString(), "10000"));
+                preferencesRasterBaselength = Integer.parseInt(key.getValue(sharedPreferences));
                 parameters.setRasterBaselength(preferencesRasterBaselength);
                 notifyDataReset();
                 break;
 
             case INTERVAL_DURATION:
-                parameters.setIntervalDuration(Integer.parseInt(sharedPreferences.getString(key.toString(), "120")));
+                parameters.setIntervalDuration(Integer.parseInt(key.getValue(sharedPreferences)));
                 dataProvider.reset();
                 notifyDataReset();
                 break;
 
             case HISTORIC_TIMESTEP:
-                parameters.setOffsetIncrement(Integer.parseInt(sharedPreferences.getString(key.toString(), "30")));
+                parameters.setOffsetIncrement(Integer.parseInt(key.getValue(sharedPreferences)));
                 break;
 
             case REGION:
-                preferencesRegion = Integer.parseInt(sharedPreferences.getString(key.toString(), "1"));
+                preferencesRegion = Integer.parseInt(key.getValue(sharedPreferences));
                 parameters.setRegion(preferencesRegion);
                 dataProvider.reset();
                 notifyDataReset();

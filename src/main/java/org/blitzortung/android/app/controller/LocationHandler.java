@@ -2,10 +2,7 @@ package org.blitzortung.android.app.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.GpsStatus;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.location.*;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,7 +12,6 @@ import com.google.inject.Singleton;
 import org.blitzortung.android.app.Main;
 import org.blitzortung.android.app.R;
 import org.blitzortung.android.app.preference.PreferenceKey;
-import org.blitzortung.android.app.preference.SharedPreferencesWrapper;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Singleton
-public class LocationHandler implements SharedPreferencesWrapper.OnSharedPreferenceChangeListener, LocationListener, GpsStatus.Listener {
+public class LocationHandler implements SharedPreferences.OnSharedPreferenceChangeListener, LocationListener, GpsStatus.Listener {
 
     public static interface Listener {
         void onLocationChanged(Location location);
@@ -81,14 +77,14 @@ public class LocationHandler implements SharedPreferencesWrapper.OnSharedPrefere
     private Set<Listener> listeners = new HashSet<Listener>();
 
     @Inject
-    public LocationHandler(LocationManager locationManager, SharedPreferencesWrapper sharedPreferences, Provider<Context> contextProvider) {
+    public LocationHandler(LocationManager locationManager, SharedPreferences sharedPreferences, Provider<Context> contextProvider) {
         this.locationManager = locationManager;
         locationManager.addGpsStatusListener(this);
         
         location = new Location("");
         invalidateLocation();
 
-        onSharedPreferenceChanged(sharedPreferences.get(), PreferenceKey.LOCATION_MODE);
+        onSharedPreferenceChanged(sharedPreferences, PreferenceKey.LOCATION_MODE);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         this.contextProvider = contextProvider;
@@ -114,49 +110,46 @@ public class LocationHandler implements SharedPreferencesWrapper.OnSharedPrefere
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferencesWrapper sharedPreferences, PreferenceKey key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String value) {
+        onSharedPreferenceChanged(sharedPreferences, PreferenceKey.valueOf(value));
+    }
+    
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, PreferenceKey key) {
         switch (key) {
             case LOCATION_MODE:
-                LocationProvider newLocationProvider = LocationProvider.fromString(sharedPreferences.getString(key.toString(), LocationProvider.NETWORK.getType()));
+                LocationProvider newLocationProvider = LocationProvider.fromString(key.getValue(sharedPreferences));
                 if (newLocationProvider != locationProvider) {
                     updateProvider(newLocationProvider, sharedPreferences);
                 }
                 break;
 
             case LOCATION_LONGITUDE:
-                updateManualLongitude(sharedPreferences);
+                location.setLongitude(fetchUpdatedCoordinate(sharedPreferences, key));
+                sendLocationUpdate();
                 break;
 
             case LOCATION_LATITUDE:
-                updateManualLatitude(sharedPreferences);
+                location.setLatitude(fetchUpdatedCoordinate(sharedPreferences, key));
+                sendLocationUpdate();
                 break;
 
         }
     }
 
-    private void updateManualLatitude(SharedPreferences sharedPreferences) {
+    private double fetchUpdatedCoordinate(SharedPreferences sharedPreferences, PreferenceKey key) {
         try {
-            location.setLatitude(Double.valueOf(sharedPreferences.getString(PreferenceKey.LOCATION_LATITUDE.toString(), "49.0")));
-            sendLocationUpdate();
+            return Double.valueOf(key.getValue(sharedPreferences));
         } catch (NumberFormatException e) {
             Log.v(Main.LOG_TAG, "LocationHandler: bad number format for manual latitude setting");
-        }
-    }
-
-    private void updateManualLongitude(SharedPreferences sharedPreferences) {
-        try {
-            location.setLongitude(Double.valueOf(sharedPreferences.getString(PreferenceKey.LOCATION_LONGITUDE.toString(), "11.0")));
-            sendLocationUpdate();
-        } catch (NumberFormatException e) {
-            Log.v(Main.LOG_TAG, "LocationHandler: bad number format for manual longitude setting");
+            return Double.NaN;
         }
     }
 
     private void updateProvider(LocationProvider newLocationProvider, SharedPreferences sharedPreferences) {
         if (newLocationProvider == LocationProvider.MANUAL) {
             locationManager.removeUpdates(this);
-            updateManualLongitude(sharedPreferences);
-            updateManualLatitude(sharedPreferences);
+            location.setLongitude(fetchUpdatedCoordinate(sharedPreferences, PreferenceKey.LOCATION_LONGITUDE));
+            location.setLatitude(fetchUpdatedCoordinate(sharedPreferences, PreferenceKey.LOCATION_LATITUDE));
             location.setProvider(newLocationProvider.getType());
         } else {
             invalidateLocationAndSendLocationUpdate();

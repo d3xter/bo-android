@@ -95,7 +95,7 @@
                 <version>3.5.3</version>
                 <configuration>
                     <sdk>
-                        <platform>8</platform>
+                        <platform>14</platform>
                     </sdk>
                 </configuration>
                 <extensions>true</extensions>

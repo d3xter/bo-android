@@ -50,6 +50,7 @@ import org.blitzortung.android.map.overlay.FadeOverlay;
 import org.blitzortung.android.map.overlay.OwnLocationOverlay;
 import org.blitzortung.android.map.overlay.ParticipantsOverlay;
 import org.blitzortung.android.map.overlay.StrokesOverlay;
+import roboguice.activity.RoboActivity;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -109,6 +110,8 @@ public class Main extends OwnMapActivity implements DataListener, OnSharedPrefer
 
         OwnMapView mapView = (OwnMapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
+        boolean hardwareAccelerated = mapView.isHardwareAccelerated();
+        Log.d(Main.LOG_TAG, "Main.onCreate() mapview is hardware accelerated" + hardwareAccelerated);
         setMapView(mapView);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -170,7 +173,7 @@ public class Main extends OwnMapActivity implements DataListener, OnSharedPrefer
                 buttonColumnHandler.addElement(menuButton);
             }
 
-            getActionBar().hide();
+            //getActionBar().hide();
         }
 
         historyController = new HistoryController(this, dataHandler);
