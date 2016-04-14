@@ -21,7 +21,6 @@ package org.blitzortung.android.location
 import android.content.*
 import android.location.Location
 import android.location.LocationManager
-import android.provider.Settings
 import android.util.Log
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R

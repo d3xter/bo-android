@@ -45,7 +45,7 @@ class HistoryController(activity: Activity, private val buttonHandler: ButtonCol
     private lateinit var goRealtime: ImageButton
 
     val dataConsumer = { event: Event ->
-        if (event is ResultEvent && !event.failed) {
+        if (event is ResultEvent) {
             setRealtimeData(event.containsRealtimeData())
         }
     }
@@ -140,6 +140,7 @@ class HistoryController(activity: Activity, private val buttonHandler: ButtonCol
     }
 
     fun setAppService(appService: AppService?) {
+        Log.i(Main.LOG_TAG, "HistoryController.setAppService($appService) ${appService?.dataHandler()}")
         this.appService = appService
         dataHandler = appService?.dataHandler()
     }
