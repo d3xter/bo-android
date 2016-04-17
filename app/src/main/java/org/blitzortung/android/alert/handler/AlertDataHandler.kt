@@ -38,7 +38,7 @@ open class AlertDataHandler {
         val strikeLocation = Location("")
 
         strikes.forEach { strike ->
-            val bearingToStrike = calculateBearingToStrike(location, strikeLocation, strike)
+            val bearingToStrike = location.calculateBearingToStrike(strike)
 
             val alertSector = getRelevantSector(bearingToStrike.toDouble(), sectors)
             alertSector?.let {
@@ -116,10 +116,12 @@ open class AlertDataHandler {
         }
     }
 
-    private fun calculateBearingToStrike(location: Location, strikeLocation: Location, strike: Strike): Float {
-        strikeLocation.longitude = strike.longitude.toDouble()
-        strikeLocation.latitude = strike.latitude.toDouble()
-        return location.bearingTo(strikeLocation)
+    private fun Location.calculateBearingToStrike(strike: Strike): Float {
+        val tmpLocation = Location("")
+        tmpLocation.longitude = strike.longitude.toDouble()
+        tmpLocation.latitude = strike.latitude.toDouble()
+
+        return this.bearingTo(tmpLocation)
     }
 
     private fun getRelevantSector(bearing: Double, sectors: Collection<AggregatingAlertSector>): AggregatingAlertSector? {

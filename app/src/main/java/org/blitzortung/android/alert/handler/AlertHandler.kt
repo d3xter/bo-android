@@ -31,16 +31,16 @@ import android.os.Vibrator
 import android.util.Log
 import org.blitzortung.android.alert.AlertParameters
 import org.blitzortung.android.alert.AlertResult
-import org.blitzortung.android.alert.data.AlertSignal
 import org.blitzortung.android.alert.event.AlertCancelEvent
 import org.blitzortung.android.alert.event.AlertEvent
 import org.blitzortung.android.alert.event.AlertResultEvent
 import org.blitzortung.android.app.BOApplication
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
-import org.blitzortung.android.app.controller.NotificationHandler
+import org.blitzortung.android.notification.NotificationHandler
 import org.blitzortung.android.app.view.PreferenceKey
 import org.blitzortung.android.app.view.get
+import org.blitzortung.android.data.DataHandler
 import org.blitzortung.android.data.beans.Strike
 import org.blitzortung.android.data.provider.result.ClearDataEvent
 import org.blitzortung.android.data.provider.result.ResultEvent
@@ -54,10 +54,9 @@ import org.blitzortung.android.util.isAtLeast
 
 class AlertHandler(
         private val locationHandler: LocationHandler,
+        private val dataHandler: DataHandler,
         private val preferences: SharedPreferences,
         private val context: Context,
-        private val vibrator: Vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator,
-        private val notificationHandler: NotificationHandler = NotificationHandler(context),
         private val alertDataHandler: AlertDataHandler = AlertDataHandler()
 
 ) : OnSharedPreferenceChangeListener {
@@ -80,28 +79,13 @@ class AlertHandler(
         }
     }
 
-    private val dataHandler = BOApplication.dataHandler
-
     private var lastStrikes: Collection<Strike>? = null
-
-    private var alertSignal: AlertSignal = AlertSignal()
 
     var currentLocation: Location? = null
         private set
 
     var isAlertEnabled: Boolean = false
         private set
-
-    private var notificationDistanceLimit: Float = 0.0f
-
-    private var notificationLastTimestamp: Long = 0
-
-    private var signalingDistanceLimit: Float = 0.0f
-
-    private var signalingThresholdTime: Long = 0
-
-    private var signalingLastTimestamp: Long = 0
-
 
     val locationEventConsumer: (LocationEvent) -> Unit = { event ->
         Log.v(Main.LOG_TAG, "AlertHandler received location " + currentLocation + " vs " + event.location)
@@ -149,19 +133,6 @@ class AlertHandler(
                 val measurementSystemName = sharedPreferences.get(key, MeasurementSystem.METRIC.toString())
 
                 alertParameters = alertParameters.copy(measurementSystem = MeasurementSystem.valueOf(measurementSystemName))
-            }
-
-            PreferenceKey.ALERT_NOTIFICATION_DISTANCE_LIMIT -> notificationDistanceLimit = sharedPreferences.get(key, "50").toFloat()
-
-            PreferenceKey.ALERT_SIGNALING_DISTANCE_LIMIT -> signalingDistanceLimit = sharedPreferences.get(key, "25").toFloat()
-
-            PreferenceKey.ALERT_SIGNALING_THRESHOLD_TIME -> signalingThresholdTime = sharedPreferences.get(key, "25").toLong() * 1000 * 60
-
-            PreferenceKey.ALERT_VIBRATION_SIGNAL -> alertSignal = alertSignal.copy(vibrationDuration = sharedPreferences.get(key, 3) * 10)
-
-            PreferenceKey.ALERT_SOUND_SIGNAL -> {
-                val signalUri = sharedPreferences.get(key, "")
-                alertSignal = alertSignal.copy(soundSignal = if (!signalUri.isEmpty()) Uri.parse(signalUri) else null)
             }
         }
     }
@@ -213,11 +184,9 @@ class AlertHandler(
 
     private fun processResult(alertResult: AlertResult?) {
         if (alertResult != null) {
-            handleAlert(alertResult)
+            Log.v(Main.LOG_TAG, "AlertHandler.processResult() broadcast result %s".format(alertResult))
         } else {
             Log.v(Main.LOG_TAG, "AlertHandler.processResult() no result")
-            notificationHandler.clearNotification()
-            broadcastResult(null)
         }
     }
 
@@ -247,36 +216,7 @@ class AlertHandler(
             Log.d(Main.LOG_TAG, "AlertHandler.handleAlertSignal() skipped - ${(signalingLatestTimestamp - signalingLastTimestamp) / 1000}, threshold: ${signalingThresholdTime / 1000}")
         }
     }
-
-    private fun handleAlertNotification(alertResult: AlertResult) {
-        val notificationLatestTimestamp = alertDataHandler.getLatestTimstampWithin(notificationDistanceLimit, alertResult)
-        if (notificationLatestTimestamp > notificationLastTimestamp) {
-            Log.d(Main.LOG_TAG, "AlertHandler.handleAlertNotification() notification ${notificationLatestTimestamp / 1000}")
-            notificationHandler.sendNotification(context.resources.getString(R.string.activity) + ": " + alertDataHandler.getTextMessage(alertResult, notificationDistanceLimit))
-            notificationLastTimestamp = notificationLatestTimestamp
-        } else {
-            Log.d(Main.LOG_TAG, "AlertHandler.handleAlertNotification() skipped - ${notificationLatestTimestamp - notificationLastTimestamp}")
-        }
-    }
-
-    private fun vibrateIfEnabled() {
-        vibrator.vibrate(alertSignal.vibrationDuration.toLong())
-    }
-
-    private fun playSoundIfEnabled() {
-        alertSignal.soundSignal?.let { signal ->
-            RingtoneManager.getRingtone(context, signal)?.let { ringtone ->
-                if (!ringtone.isPlaying) {
-                    if (isAtLeast(Build.VERSION_CODES.LOLLIPOP)) {
-                        ringtone.audioAttributes = AudioAttributes.Builder().setLegacyStreamType(AudioManager.STREAM_NOTIFICATION).build()
-                    } else {
-                        ringtone.streamType = AudioManager.STREAM_NOTIFICATION
-                    }
-                    ringtone.play()
-                }
-                Log.v(Main.LOG_TAG, "playing " + ringtone.getTitle(context))
-            }
-        }
+        broadcastResult(alertResult)
     }
 
     fun requestUpdates(alertEventConsumer: (AlertEvent) -> Unit) {
