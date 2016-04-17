@@ -18,8 +18,13 @@ abstract class LocationProvider(protected val locationUpdate: (Location?) -> Uni
 
     abstract val type: String
 
-    protected val Location.isValid: Boolean
-        get() = !java.lang.Double.isNaN(longitude) && !java.lang.Double.isNaN(latitude)
+    protected val Location?.isValid: Boolean
+        get() {
+            if(this == null)
+                return false
+
+            return !java.lang.Double.isNaN(longitude) && !java.lang.Double.isNaN(latitude)
+        }
 
     protected fun invalidateLocationAndSendLocationUpdate() {
         locationUpdate(null)
