@@ -54,6 +54,9 @@ dependencies {
     compile 'org.jetbrains.anko:anko-sdk23:0.8.3' // sdk19, sdk21, sdk23 are also available
     compile 'org.jetbrains.anko:anko-appcompat-v7:0.8.3' // For appcompat-v7 bindings
 
+    compile "com.github.salomonbrys.kodein:kodein:$KODEIN_VERSION"
+    compile "com.github.salomonbrys.kodein:kodein-android:$KODEIN_VERSION"
+
     testCompile 'junit:junit:4.12'
     testCompile 'net.wuerl.kotlin:assertj-core-kotlin:0.1.1'
     testCompile 'com.nhaarman:mockito-kotlin:0.3.1'
