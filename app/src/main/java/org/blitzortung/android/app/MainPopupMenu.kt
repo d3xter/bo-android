@@ -15,29 +15,31 @@ import org.blitzortung.android.dialogs.LogDialog
 import org.jetbrains.anko.startActivity
 
 class MainPopupMenu(private val context: Context, anchor: View) : PopupMenu(context, anchor) {
-    override fun onMenuItemSelected(menu: MenuBuilder?, item: MenuItem): Boolean {
-        val versionComponent = VersionComponent(context)
-        if (item.itemId == R.id.menu_preferences) {
-            context.startActivity<Preferences>()
-        } else {
-            val dialog = when (item.itemId) {
-                R.id.menu_info -> InfoDialog(context, versionComponent)
-
-                R.id.menu_alarms -> AlertDialog(context, AlertDialogColorHandler(BOApplication.sharedPreferences))
-
-                R.id.menu_log -> LogDialog(context)
-
-                else -> null
-            }
-
-            if (dialog is Dialog) {
-                dialog.show()
+    init {
+        setOnMenuItemClickListener { item ->
+            val versionComponent = VersionComponent(context)
+            if (item.itemId == R.id.menu_preferences) {
+                context.startActivity<Preferences>()
             } else {
-                return false
-            }
-        }
+                val dialog = when (item.itemId) {
+                    R.id.menu_info -> InfoDialog(context, versionComponent)
 
-        return true
+                    R.id.menu_alarms -> AlertDialog(context, AlertDialogColorHandler(BOApplication.sharedPreferences))
+
+                    R.id.menu_log -> LogDialog(context)
+
+                    else -> null
+                }
+
+                if (dialog is Dialog) {
+                    dialog.show()
+                } else {
+                    return@setOnMenuItemClickListener false
+                }
+            }
+
+            return@setOnMenuItemClickListener true
+        }
     }
 
     fun showPopupMenu() {
