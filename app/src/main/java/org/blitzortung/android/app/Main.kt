@@ -20,8 +20,6 @@ package org.blitzortung.android.app
 
 import android.Manifest
 import android.annotation.TargetApi
-import android.content.ComponentName
-import android.content.ServiceConnection
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.pm.ApplicationInfo
@@ -31,8 +29,6 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.IBinder
-import android.preference.PreferenceManager
 import android.provider.Settings
 import android.text.format.DateFormat
 import android.util.Log
@@ -50,10 +46,10 @@ import org.blitzortung.android.alert.handler.AlertHandler
 import org.blitzortung.android.app.components.VersionComponent
 import org.blitzortung.android.app.controller.ButtonColumnHandler
 import org.blitzortung.android.app.controller.HistoryController
-import org.blitzortung.android.app.view.PreferenceKey
 import org.blitzortung.android.app.view.components.StatusComponent
-import org.blitzortung.android.app.view.get
-import org.blitzortung.android.app.view.put
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
+import org.blitzortung.android.common.preferences.put
 import org.blitzortung.android.data.provider.result.DataEvent
 import org.blitzortung.android.data.provider.result.RequestStartedEvent
 import org.blitzortung.android.data.provider.result.ResultEvent
@@ -69,9 +65,7 @@ import org.blitzortung.android.map.overlay.color.ParticipantColorHandler
 import org.blitzortung.android.map.overlay.color.StrikeColorHandler
 import org.blitzortung.android.util.TabletAwareView
 import org.blitzortung.android.util.isAtLeast
-import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startService
-import org.jetbrains.anko.intentFor
 
 class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
     private val androidIdsForExtendedFunctionality = setOf("44095eb4f9f1a6a6", "f2be4516e5843964")

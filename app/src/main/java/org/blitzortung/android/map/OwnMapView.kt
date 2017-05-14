@@ -20,7 +20,6 @@ package org.blitzortung.android.map
 
 import android.content.Context
 import android.graphics.Canvas
-import android.preference.PreferenceManager
 import android.util.AttributeSet
 import android.util.Log
 import android.view.GestureDetector
@@ -32,7 +31,7 @@ import com.google.android.maps.MapView
 import org.blitzortung.android.app.BOApplication
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
-import org.blitzortung.android.app.view.PreferenceKey
+import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.location.LocationHandler
 import java.util.*
 

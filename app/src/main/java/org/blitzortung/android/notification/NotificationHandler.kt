@@ -26,7 +26,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import android.util.Log
 import org.blitzortung.android.alert.AlertResult
 import org.blitzortung.android.alert.event.AlertEvent
 import org.blitzortung.android.alert.event.AlertResultEvent
@@ -34,10 +33,9 @@ import org.blitzortung.android.alert.handler.AlertHandler
 
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
-import org.blitzortung.android.app.view.OnSharedPreferenceChangeListener
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
-import org.blitzortung.android.app.view.getAndConvert
+import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListener
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.notification.signal.SignalManager
 import org.blitzortung.android.util.isAtLeast
 import org.jetbrains.anko.notificationManager

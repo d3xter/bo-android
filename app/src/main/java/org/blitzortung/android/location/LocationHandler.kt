@@ -26,8 +26,9 @@ import org.blitzortung.android.app.event.BackgroundModeEvent
 import org.blitzortung.android.app.BackgroundModeHandler
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListener
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.location.provider.LocationProvider
 import org.blitzortung.android.location.provider.ManagerLocationProvider
 import org.blitzortung.android.location.provider.createLocationProvider
@@ -40,7 +41,7 @@ open class LocationHandler(
         private val sharedPreferences: SharedPreferences
 
 )
-: SharedPreferences.OnSharedPreferenceChangeListener {
+: OnSharedPreferenceChangeListener {
 
     private var backgroundMode = true
         set(value) {
@@ -93,7 +94,7 @@ open class LocationHandler(
         onSharedPreferenceChanged(sharedPreferences, PreferenceKey.fromString(keyString))
     }
 
-    private fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: PreferenceKey) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: PreferenceKey) {
         when (key) {
             PreferenceKey.LOCATION_MODE -> {
                 var newProvider = createLocationProvider(context,

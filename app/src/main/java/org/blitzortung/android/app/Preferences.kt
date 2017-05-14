@@ -25,8 +25,8 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.preference.PreferenceActivity
 import android.provider.Settings
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.data.provider.DataProviderType
 import org.blitzortung.android.location.LocationHandler
 import org.jetbrains.anko.locationManager

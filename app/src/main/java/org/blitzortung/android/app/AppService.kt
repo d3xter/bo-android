@@ -28,11 +28,9 @@ import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import org.blitzortung.android.alert.event.AlertEvent
-import org.blitzortung.android.alert.handler.AlertHandler
 import org.blitzortung.android.app.event.BackgroundModeEvent
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.data.DataChannel
 import org.blitzortung.android.data.DataHandler
 import org.blitzortung.android.data.Parameters

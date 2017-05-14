@@ -23,13 +23,12 @@ import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.ShapeDrawable
-import android.preference.PreferenceManager
 import com.google.android.maps.ItemizedOverlay
 import org.blitzortung.android.app.BOApplication
 import org.blitzortung.android.app.R
 import org.blitzortung.android.app.helper.ViewHelper
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.location.LocationEvent
 import org.blitzortung.android.map.OwnMapView
 import org.blitzortung.android.map.components.LayerOverlayComponent

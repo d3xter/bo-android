@@ -2,9 +2,9 @@ package org.blitzortung.android.notification.signal
 
 import android.content.Context
 import android.content.SharedPreferences
-import org.blitzortung.android.app.view.OnSharedPreferenceChangeListener
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListener
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 import org.jetbrains.anko.vibrator
 
 class VibrationSignalContainer(

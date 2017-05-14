@@ -19,8 +19,8 @@
 package org.blitzortung.android.data.provider
 
 import android.content.SharedPreferences
-import org.blitzortung.android.app.view.OnSharedPreferenceChangeListener
-import org.blitzortung.android.app.view.PreferenceKey
+import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListener
+import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.data.Parameters
 import org.blitzortung.android.data.beans.Station
 import org.blitzortung.android.data.provider.result.ResultEvent

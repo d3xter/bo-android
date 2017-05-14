@@ -20,8 +20,8 @@ package org.blitzortung.android.map.overlay.color
 
 import android.content.SharedPreferences
 import android.graphics.Color
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 
 abstract class ColorHandler(private val preferences: SharedPreferences) {
 

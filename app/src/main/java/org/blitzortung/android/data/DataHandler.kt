@@ -23,9 +23,9 @@ import android.os.PowerManager
 import android.util.Log
 import org.blitzortung.android.app.BOApplication
 import org.blitzortung.android.app.Main
-import org.blitzortung.android.app.view.OnSharedPreferenceChangeListener
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListener
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.data.provider.DataProvider
 import org.blitzortung.android.data.provider.DataProviderFactory
 import org.blitzortung.android.data.provider.DataProviderType

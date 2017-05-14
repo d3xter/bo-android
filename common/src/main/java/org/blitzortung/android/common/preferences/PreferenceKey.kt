@@ -16,10 +16,7 @@
 
 */
 
-package org.blitzortung.android.app.view
-
-import android.content.SharedPreferences
-import java.util.*
+package org.blitzortung.android.common.preferences
 
 enum class PreferenceKey(val key: String) {
     USERNAME("username"),
@@ -56,26 +53,26 @@ enum class PreferenceKey(val key: String) {
 
     companion object {
 
-        private val stringToValueMap = HashMap<String, PreferenceKey>()
+        private val stringToValueMap = java.util.HashMap<String, PreferenceKey>()
 
         init {
-            for (key in PreferenceKey.values()) {
+            for (key in org.blitzortung.android.common.preferences.PreferenceKey.values()) {
                 val keyString = key.toString()
-                if (keyString in stringToValueMap) {
+                if (keyString in org.blitzortung.android.common.preferences.PreferenceKey.Companion.stringToValueMap) {
                     throw IllegalStateException("key value '%s' already defined".format(keyString))
                 }
-                stringToValueMap[keyString] = key
+                org.blitzortung.android.common.preferences.PreferenceKey.Companion.stringToValueMap[keyString] = key
             }
         }
 
-        fun fromString(string: String): PreferenceKey {
-            return stringToValueMap[string]!!
+        fun fromString(string: String): org.blitzortung.android.common.preferences.PreferenceKey {
+            return org.blitzortung.android.common.preferences.PreferenceKey.Companion.stringToValueMap[string]!!
         }
     }
 }
 
 //Helper function to retrieve a preference value of a PreferenceKey
-internal inline fun <reified T> SharedPreferences.get(prefKey: PreferenceKey, default: T): T {
+fun <T: Any> android.content.SharedPreferences.get(prefKey: org.blitzortung.android.common.preferences.PreferenceKey, default: T): T {
     val key = prefKey.toString()
 
     //Set<String> is not possible because of type erasure, so for Set<String> we still need to use the old way
@@ -85,13 +82,14 @@ internal inline fun <reified T> SharedPreferences.get(prefKey: PreferenceKey, de
         is Boolean -> this.getBoolean(key, default)
         is String -> this.getString(key, default)
         is Float -> this.getFloat(key, default)
-        else -> throw IllegalArgumentException("Type ${T::class} cannot be retrieved from a SharedPreference")
+        else -> throw IllegalArgumentException("Type ${default::class} cannot be retrieved from a SharedPreference")
     }
 
+    @Suppress("UNCHECKED_CAST")
     return value as T
 }
 
-internal inline fun <reified T, V> SharedPreferences.getAndConvert(prefKey: PreferenceKey, default: T, convert: (T) -> V): V {
+fun <T: Any, V> android.content.SharedPreferences.getAndConvert(prefKey: org.blitzortung.android.common.preferences.PreferenceKey, default: T, convert: (T) -> V): V {
     val value = this.get(prefKey, default)
     return convert(value)
 }
@@ -99,32 +97,31 @@ internal inline fun <reified T, V> SharedPreferences.getAndConvert(prefKey: Pref
 /**
  *  A generic extension function to set a SharedPreference-Value
  */
-internal inline fun <reified T> SharedPreferences.Editor.put(key: String, value: T) {
+fun <T: Any> android.content.SharedPreferences.Editor.put(key: String, value: T) {
     when(value) {
         is String -> this.putString(key, value)
         is Int -> this.putInt(key, value)
         is Boolean -> this.putBoolean(key, value)
         is Float -> this.putFloat(key, value)
         is Long -> this.putLong(key, value)
-        else -> throw IllegalArgumentException("Type ${T::class} cannoted be put inside a SharedPreference")
+        else -> throw IllegalArgumentException("Type ${value::class} cannoted be put inside a SharedPreference")
     }
 }
 
-internal inline fun <reified T> SharedPreferences.Editor.put(key: PreferenceKey, value: T) {
+fun <T: Any> android.content.SharedPreferences.Editor.put(key: org.blitzortung.android.common.preferences.PreferenceKey, value: T) {
     val keyString = key.key
 
     put(keyString, value)
 }
 
-interface OnSharedPreferenceChangeListener : SharedPreferences.OnSharedPreferenceChangeListener {
-    fun onSharedPreferencesChanged(sharedPreferences: SharedPreferences, vararg keys: PreferenceKey) {
+interface OnSharedPreferenceChangeListener : android.content.SharedPreferences.OnSharedPreferenceChangeListener {
+    fun onSharedPreferencesChanged(sharedPreferences: android.content.SharedPreferences, vararg keys: org.blitzortung.android.common.preferences.PreferenceKey) {
         keys.forEach { onSharedPreferenceChanged(sharedPreferences, it) }
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, keyString: String) {
-        onSharedPreferenceChanged(sharedPreferences, PreferenceKey.fromString(keyString))
+    override fun onSharedPreferenceChanged(sharedPreferences: android.content.SharedPreferences, keyString: String) {
+        onSharedPreferenceChanged(sharedPreferences, org.blitzortung.android.common.preferences.PreferenceKey.Companion.fromString(keyString))
     }
 
-    fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: PreferenceKey);
-
+    fun onSharedPreferenceChanged(sharedPreferences: android.content.SharedPreferences, key: org.blitzortung.android.common.preferences.PreferenceKey);
 }

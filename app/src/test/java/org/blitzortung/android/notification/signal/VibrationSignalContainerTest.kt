@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.KotlinAssertions.assertThat
-import org.blitzortung.android.app.view.PreferenceKey
+import org.blitzortung.android.common.preferences.PreferenceKey
 import org.jetbrains.anko.defaultSharedPreferences
 import org.junit.Before
 import org.junit.Test

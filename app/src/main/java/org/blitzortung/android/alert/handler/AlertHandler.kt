@@ -30,8 +30,8 @@ import org.blitzortung.android.alert.event.AlertEvent
 import org.blitzortung.android.alert.event.AlertResultEvent
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.data.DataHandler
 import org.blitzortung.android.data.beans.Strike
 import org.blitzortung.android.data.provider.result.ResultEvent

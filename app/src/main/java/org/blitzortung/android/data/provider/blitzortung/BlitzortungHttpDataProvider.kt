@@ -21,8 +21,8 @@ package org.blitzortung.android.data.provider.blitzortung
 import android.content.SharedPreferences
 import android.util.Log
 import org.blitzortung.android.app.Main
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.data.Parameters
 import org.blitzortung.android.data.beans.Station
 import org.blitzortung.android.data.beans.Strike

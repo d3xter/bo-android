@@ -5,9 +5,9 @@ import android.content.SharedPreferences
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
-import org.blitzortung.android.app.view.OnSharedPreferenceChangeListener
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListener
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 
 class SoundSignalContainer(
         private val context: Context,

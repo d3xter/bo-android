@@ -24,12 +24,11 @@ import android.app.Dialog
 import android.app.DialogFragment
 import android.content.DialogInterface
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.widget.Spinner
 import org.blitzortung.android.app.BOApplication
 import org.blitzortung.android.app.R
-import org.blitzortung.android.app.view.PreferenceKey
-import org.blitzortung.android.app.view.get
+import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.get
 
 class QuickSettingsDialog : DialogFragment() {
 
