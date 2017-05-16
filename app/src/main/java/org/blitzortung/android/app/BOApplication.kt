@@ -8,6 +8,7 @@ import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.autoAndroidModule
 import org.blitzortung.android.alert.handler.AlertHandler
 import org.blitzortung.android.common.alert.event.AlertEvent
+import org.blitzortung.android.common.background.BackgroundModeHandler
 import org.blitzortung.android.common.protocol.ConsumerContainer
 import org.blitzortung.android.data.DataHandler
 import org.blitzortung.android.location.LocationHandler

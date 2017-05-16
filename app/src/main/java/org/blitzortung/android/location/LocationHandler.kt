@@ -22,18 +22,17 @@ import android.content.*
 import android.location.Location
 import android.location.LocationManager
 import android.util.Log
-import org.blitzortung.android.app.event.BackgroundModeEvent
-import org.blitzortung.android.app.BackgroundModeHandler
-import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
+import org.blitzortung.android.common.background.BackgroundModeEvent
+import org.blitzortung.android.common.background.BackgroundModeHandler
 import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListener
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
+import org.blitzortung.android.common.protocol.ConsumerContainer
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.location.provider.LocationProvider
 import org.blitzortung.android.location.provider.ManagerLocationProvider
 import org.blitzortung.android.location.provider.createLocationProvider
-import org.blitzortung.android.common.protocol.ConsumerContainer
-import org.blitzortung.android.common.util.LOG_TAG
 import org.jetbrains.anko.longToast
 
 open class LocationHandler(

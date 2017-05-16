@@ -50,6 +50,7 @@ import org.blitzortung.android.app.controller.ButtonColumnHandler
 import org.blitzortung.android.app.controller.HistoryController
 import org.blitzortung.android.app.view.components.StatusComponent
 import org.blitzortung.android.common.alert.event.AlertResultEvent
+import org.blitzortung.android.common.background.BackgroundModeHandler
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.common.preferences.put

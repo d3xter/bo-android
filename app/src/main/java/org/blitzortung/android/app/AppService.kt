@@ -32,7 +32,8 @@ import android.util.Log
 import com.github.salomonbrys.kodein.KodeinInjector
 import com.github.salomonbrys.kodein.android.ServiceInjector
 import com.github.salomonbrys.kodein.instance
-import org.blitzortung.android.app.event.BackgroundModeEvent
+import org.blitzortung.android.common.background.BackgroundModeEvent
+import org.blitzortung.android.common.background.BackgroundModeHandler
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.common.util.LOG_TAG

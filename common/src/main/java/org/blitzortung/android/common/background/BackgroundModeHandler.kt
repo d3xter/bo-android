@@ -1,9 +1,8 @@
-package org.blitzortung.android.app
+package org.blitzortung.android.common.background
 
 import android.content.Context
 import android.os.Handler
 import android.util.Log
-import org.blitzortung.android.app.event.BackgroundModeEvent
 import org.blitzortung.android.common.protocol.ConsumerContainer
 import org.blitzortung.android.common.util.LOG_TAG
 

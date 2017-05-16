@@ -1,4 +1,4 @@
-package org.blitzortung.android.app.event
+package org.blitzortung.android.common.background
 
 import org.blitzortung.android.common.protocol.Event
 
