@@ -23,20 +23,36 @@ import android.app.AlertDialog.Builder
 import android.app.Dialog
 import android.app.DialogFragment
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Spinner
-import org.blitzortung.android.app.BOApplication
+import com.github.salomonbrys.kodein.KodeinInjector
+import com.github.salomonbrys.kodein.android.FragmentInjector
+import com.github.salomonbrys.kodein.instance
 import org.blitzortung.android.app.R
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
 
-class QuickSettingsDialog : DialogFragment() {
+class QuickSettingsDialog : DialogFragment(), FragmentInjector {
+    override val injector: KodeinInjector = KodeinInjector()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        initializeInjector()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        destroyInjector()
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = Builder(activity)
         val layoutInflater = activity.layoutInflater
 
-        val preferences = BOApplication.sharedPreferences
+        val preferences: SharedPreferences by instance()
 
         val regionValues = resources.getStringArray(R.array.regions_values)
         val currentRegionValue = preferences.get(PreferenceKey.REGION, regionValues[0])

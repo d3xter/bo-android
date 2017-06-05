@@ -38,24 +38,30 @@ import android.view.ViewConfiguration
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.Toast
+import com.github.salomonbrys.kodein.KodeinInjector
+import com.github.salomonbrys.kodein.android.ActivityInjector
+import com.github.salomonbrys.kodein.instance
 import com.google.android.maps.GeoPoint
 import kotlinx.android.synthetic.main.map_overlay.*
 import kotlinx.android.synthetic.main.overlay_top.*
-import org.blitzortung.android.common.alert.event.AlertResultEvent
 import org.blitzortung.android.alert.handler.AlertHandler
 import org.blitzortung.android.app.components.VersionComponent
 import org.blitzortung.android.app.controller.ButtonColumnHandler
 import org.blitzortung.android.app.controller.HistoryController
 import org.blitzortung.android.app.view.components.StatusComponent
+import org.blitzortung.android.common.alert.event.AlertResultEvent
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.common.preferences.put
 import org.blitzortung.android.common.util.LOG_TAG
+import org.blitzortung.android.common.util.isAtLeast
+import org.blitzortung.android.data.DataHandler
 import org.blitzortung.android.data.provider.result.DataEvent
 import org.blitzortung.android.data.provider.result.RequestStartedEvent
 import org.blitzortung.android.data.provider.result.ResultEvent
 import org.blitzortung.android.data.provider.result.StatusEvent
 import org.blitzortung.android.dialogs.QuickSettingsDialog
+import org.blitzortung.android.location.LocationHandler
 import org.blitzortung.android.map.OwnMapActivity
 import org.blitzortung.android.map.OwnMapView
 import org.blitzortung.android.map.overlay.FadeOverlay
@@ -65,10 +71,11 @@ import org.blitzortung.android.map.overlay.StrikesOverlay
 import org.blitzortung.android.map.overlay.color.ParticipantColorHandler
 import org.blitzortung.android.map.overlay.color.StrikeColorHandler
 import org.blitzortung.android.util.TabletAwareView
-import org.blitzortung.android.common.util.isAtLeast
 import org.jetbrains.anko.startService
 
-class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
+class Main : OwnMapActivity(), OnSharedPreferenceChangeListener, ActivityInjector {
+    override val injector: KodeinInjector = KodeinInjector()
+
     private val androidIdsForExtendedFunctionality = setOf("44095eb4f9f1a6a6", "f2be4516e5843964")
 
     private lateinit var statusComponent: StatusComponent
@@ -85,12 +92,12 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
     private lateinit var historyController: HistoryController
     private var appService: AppService? = null
 
-    private val locationHandler = BOApplication.locationHandler
-    private val alertHandler = BOApplication.alertHandler
-    private val dataHandler = BOApplication.dataHandler
-    private val backgroundModeHandler = BOApplication.backgroundModeHandler
+    private val locationHandler: LocationHandler by instance()
+    private val alertHandler: AlertHandler by instance()
+    private val dataHandler: DataHandler by instance()
+    private val backgroundModeHandler: BackgroundModeHandler by instance()
 
-    private val preferences = BOApplication.sharedPreferences
+    private val preferences: SharedPreferences by instance()
 
     private var currentResult: ResultEvent? = null
 
@@ -106,7 +113,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
 
                 Log.d(LOG_TAG, "Main.onDataUpdate() " + event)
 
-                val resultParameters = event.parameters!!
+                val resultParameters = event.parameters
 
                 clearDataIfRequested()
 
@@ -161,6 +168,9 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
             Log.e(LOG_TAG, e.toString())
             Toast.makeText(baseContext, "bad android version", Toast.LENGTH_LONG).show()
         }
+
+        //Initialize Kodein
+        initializeInjector()
 
         Log.v(LOG_TAG, "Main.onCreate()")
 
@@ -231,7 +241,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
                 visibility = View.VISIBLE
 
                 setOnClickListener { v ->
-                    BOApplication.dataHandler.toggleExtendedMode()
+                    dataHandler.toggleExtendedMode()
 
                     AppService.instance?.reloadData()
                 }
@@ -419,6 +429,9 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
     override fun onDestroy() {
         super.onDestroy()
         Log.i(LOG_TAG, "Main: onDestroy()")
+
+        //Destroy the injector now
+        destroyInjector()
     }
 
     override fun isRouteDisplayed(): Boolean {
@@ -486,9 +499,9 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             Log.v(LOG_TAG, "Main.onKeyUp(KEYCODE_MENU)")
             showPopupMenu(upper_row)
-            return true;
+            return true
         }
-        return super.onKeyUp(keyCode, event);
+        return super.onKeyUp(keyCode, event)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, keyString: String) {

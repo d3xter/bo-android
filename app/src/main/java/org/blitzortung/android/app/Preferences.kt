@@ -25,25 +25,35 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.preference.PreferenceActivity
 import android.provider.Settings
+import com.github.salomonbrys.kodein.KodeinInjector
+import com.github.salomonbrys.kodein.android.ActivityInjector
+import com.github.salomonbrys.kodein.android.appKodein
+import com.github.salomonbrys.kodein.instance
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.data.provider.DataProviderType
 import org.blitzortung.android.location.LocationHandler
 import org.jetbrains.anko.locationManager
 
-class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
+class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener, ActivityInjector {
+    override val injector: KodeinInjector = KodeinInjector()
 
+    private val backgroundModeHandler: BackgroundModeHandler by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initializeInjector()
+
         addPreferencesFromResource(R.xml.preferences)
 
-        val prefs = BOApplication.sharedPreferences
-        prefs.registerOnSharedPreferenceChangeListener(this)
+        with(appKodein().instance<SharedPreferences>()) {
+            registerOnSharedPreferenceChangeListener(this@Preferences)
 
-        configureDataSourcePreferences(prefs)
-        configureLocationProviderPreferences(prefs)
+            configureDataSourcePreferences(this)
+            configureLocationProviderPreferences(this)
+        }
+
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, keyString: String) {
@@ -66,7 +76,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 val provider = configureLocationProviderPreferences(sharedPreferences)
 
                 if(provider != LocationHandler.MANUAL_PROVIDER && !this.locationManager.isProviderEnabled(provider)) {
-                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 }
             }
 
@@ -116,12 +126,18 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     override fun onResume() {
         super.onResume()
 
-        BOApplication.backgroundModeHandler.updateBackgroundMode(false)
+        backgroundModeHandler.updateBackgroundMode(false)
     }
 
     override fun onPause() {
-        BOApplication.backgroundModeHandler.updateBackgroundMode(true)
+        backgroundModeHandler.updateBackgroundMode(true)
 
         super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        destroyInjector()
     }
 }

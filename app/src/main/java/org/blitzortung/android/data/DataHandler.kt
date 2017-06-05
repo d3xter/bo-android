@@ -22,18 +22,17 @@ import android.content.SharedPreferences
 import android.os.PowerManager
 import android.util.Log
 import org.blitzortung.android.app.BOApplication
-import org.blitzortung.android.app.Main
 import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListener
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
+import org.blitzortung.android.common.protocol.ConsumerContainer
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.data.provider.DataProvider
 import org.blitzortung.android.data.provider.DataProviderFactory
 import org.blitzortung.android.data.provider.DataProviderType
 import org.blitzortung.android.data.provider.result.DataEvent
 import org.blitzortung.android.data.provider.result.RequestStartedEvent
 import org.blitzortung.android.data.provider.result.ResultEvent
-import org.blitzortung.android.common.protocol.ConsumerContainer
-import org.blitzortung.android.common.util.LOG_TAG
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
 import java.util.*
@@ -42,10 +41,9 @@ import java.util.concurrent.locks.ReentrantLock
 class DataHandler @JvmOverloads constructor(
         private val wakeLock: PowerManager.WakeLock,
         private val agentSuffix: String,
+        sharedPreferences: SharedPreferences,
         private val dataProviderFactory: DataProviderFactory = DataProviderFactory()
 ) : OnSharedPreferenceChangeListener {
-
-    private val sharedPreferences = BOApplication.sharedPreferences
 
     private val lock = ReentrantLock()
     private var dataProvider: DataProvider? = null
@@ -137,7 +135,7 @@ class DataHandler @JvmOverloads constructor(
         }
 
     private fun downloadAndBroadcastData(taskParameters: TaskParameters, postDownload: (ResultEvent?) -> Unit) {
-        BOApplication.async() {
+        BOApplication.async {
             val parameters = taskParameters.parameters
             val flags = taskParameters.flags
 
@@ -145,7 +143,7 @@ class DataHandler @JvmOverloads constructor(
                 try {
                     var result = ResultEvent(referenceTime = System.currentTimeMillis(), parameters = parameters, flags = flags)
 
-                    dataProvider!!.retrieveData() {
+                    dataProvider!!.retrieveData {
                         if (parameters.isRaster()) {
                             result = getStrikesGrid(parameters, result)
                         } else {
@@ -194,18 +192,18 @@ class DataHandler @JvmOverloads constructor(
 
             PreferenceKey.RASTER_SIZE -> {
                 val rasterBaselength = Integer.parseInt(sharedPreferences.get(key, "10000"))
-                parameters = parameters.copy(rasterBaselength = rasterBaselength);
+                parameters = parameters.copy(rasterBaselength = rasterBaselength)
                 updateData()
             }
 
             PreferenceKey.COUNT_THRESHOLD -> {
                 val countThreshold = Integer.parseInt(sharedPreferences.get(key, "1"))
-                parameters = parameters.copy(countThreshold = countThreshold);
+                parameters = parameters.copy(countThreshold = countThreshold)
                 updateData()
             }
 
             PreferenceKey.INTERVAL_DURATION -> {
-                parameters = parameters.copy(intervalDuration = Integer.parseInt(sharedPreferences.get(key, "60")));
+                parameters = parameters.copy(intervalDuration = Integer.parseInt(sharedPreferences.get(key, "60")))
                 updateData()
             }
 
@@ -214,7 +212,7 @@ class DataHandler @JvmOverloads constructor(
 
             PreferenceKey.REGION -> {
                 val region = Integer.parseInt(sharedPreferences.get(key, "1"))
-                parameters = parameters.copy(region = region);
+                parameters = parameters.copy(region = region)
                 updateData()
             }
 

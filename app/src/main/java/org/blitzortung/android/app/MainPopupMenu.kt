@@ -2,11 +2,11 @@ package org.blitzortung.android.app
 
 import android.app.Dialog
 import android.content.Context
-import android.support.v7.view.menu.MenuBuilder
 import android.support.v7.widget.PopupMenu
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
+import com.github.salomonbrys.kodein.android.appKodein
+import com.github.salomonbrys.kodein.instance
 import org.blitzortung.android.app.components.VersionComponent
 import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.dialogs.AlertDialog
@@ -25,7 +25,7 @@ class MainPopupMenu(private val context: Context, anchor: View) : PopupMenu(cont
                 val dialog = when (item.itemId) {
                     R.id.menu_info -> InfoDialog(context, versionComponent)
 
-                    R.id.menu_alarms -> AlertDialog(context, AlertDialogColorHandler(BOApplication.sharedPreferences))
+                    R.id.menu_alarms -> AlertDialog(context, AlertDialogColorHandler(context.appKodein().instance()))
 
                     R.id.menu_log -> LogDialog(context)
 

@@ -21,18 +21,20 @@ package org.blitzortung.android.dialogs
 import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
-import org.blitzortung.android.app.BOApplication
+import com.github.salomonbrys.kodein.android.appKodein
+import com.github.salomonbrys.kodein.instance
 import org.blitzortung.android.alert.handler.AlertHandler
-
-import org.blitzortung.android.app.AppService
 import org.blitzortung.android.app.R
 import org.blitzortung.android.app.view.AlertView
+import org.blitzortung.android.data.DataHandler
 import org.blitzortung.android.map.overlay.color.ColorHandler
 
 class AlertDialog(context: Context, private val colorHandler: ColorHandler) : android.app.AlertDialog(context) {
     private lateinit var alertView: AlertView
 
-    private val alertHandler: AlertHandler = BOApplication.alertHandler
+    private val kodein = context.appKodein()
+
+    private val alertHandler: AlertHandler = kodein.instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +52,7 @@ class AlertDialog(context: Context, private val colorHandler: ColorHandler) : an
 
         alertHandler.requestUpdates(alertView.alertEventConsumer)
 
-        alertView.setColorHandler(colorHandler, BOApplication.dataHandler.intervalDuration)
+        alertView.setColorHandler(colorHandler, kodein.instance<DataHandler>().intervalDuration)
         alertView.alertEventConsumer(alertHandler.alertEvent)
 
         colorHandler.updateTarget()

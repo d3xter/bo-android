@@ -27,7 +27,11 @@ import android.content.SharedPreferences
 import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
+import android.os.PowerManager
 import android.util.Log
+import com.github.salomonbrys.kodein.KodeinInjector
+import com.github.salomonbrys.kodein.android.ServiceInjector
+import com.github.salomonbrys.kodein.instance
 import org.blitzortung.android.app.event.BackgroundModeEvent
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
@@ -43,7 +47,15 @@ import org.blitzortung.android.util.Period
 import org.jetbrains.anko.intentFor
 import java.util.*
 
-class AppService protected constructor(private val handler: Handler, private val updatePeriod: Period) : Service(), Runnable, SharedPreferences.OnSharedPreferenceChangeListener {
+class AppService protected constructor(private val handler: Handler,
+                                       private val updatePeriod: Period
+) : Service(),
+        Runnable,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        ServiceInjector
+{
+    override val injector: KodeinInjector = KodeinInjector()
+
     private val binder = DataServiceBinder()
 
     private val period: Int
@@ -62,18 +74,18 @@ class AppService protected constructor(private val handler: Handler, private val
     var showHistoricData: Boolean = false
         private set
 
-    private val dataHandler: DataHandler = BOApplication.dataHandler
-    private val backgroundModeHandler = BOApplication.backgroundModeHandler
+    private val dataHandler: DataHandler by instance()
+    private val backgroundModeHandler: BackgroundModeHandler by instance()
     private var isInBackground = true
 
-    private val preferences = BOApplication.sharedPreferences
+    private val preferences: SharedPreferences by instance()
 
     private val alertEnabled: Boolean
         get() = preferences.get(PreferenceKey.ALERT_ENABLED, false)
 
     private var alarmManager: AlarmManager? = null
     private var pendingIntent: PendingIntent? = null
-    private val wakeLock = BOApplication.wakeLock
+    private val wakeLock: PowerManager.WakeLock by instance()
 
     private val dataEventConsumer = { event: DataEvent ->
         if (event is ResultEvent) {
@@ -113,6 +125,8 @@ class AppService protected constructor(private val handler: Handler, private val
     override fun onCreate() {
         Log.i(LOG_TAG, "AppService.onCreate()")
         super.onCreate()
+
+        initializeInjector()
 
         backgroundModeHandler.requestUpdates(backgroundModeConsumer)
 
@@ -187,6 +201,8 @@ class AppService protected constructor(private val handler: Handler, private val
 
     override fun onDestroy() {
         super.onDestroy()
+
+        destroyInjector()
 
         backgroundModeHandler.removeUpdates(backgroundModeConsumer)
 

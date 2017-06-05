@@ -22,16 +22,20 @@ import android.app.Activity
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
+import com.github.salomonbrys.kodein.android.appKodein
+import com.github.salomonbrys.kodein.instance
 import kotlinx.android.synthetic.main.map_overlay.*
-import org.blitzortung.android.app.*
+import org.blitzortung.android.app.AppService
+import org.blitzortung.android.app.ButtonGroup
+import org.blitzortung.android.app.R
+import org.blitzortung.android.common.protocol.Event
 import org.blitzortung.android.data.DataChannel
 import org.blitzortung.android.data.DataHandler
 import org.blitzortung.android.data.provider.result.ResultEvent
-import org.blitzortung.android.common.protocol.Event
 
 class HistoryController(private val activity: Activity, private val buttonHandler: ButtonColumnHandler<ImageButton, ButtonGroup>) {
 
-    private val dataHandler: DataHandler = BOApplication.dataHandler
+    private val dataHandler: DataHandler = activity.appKodein().instance()
 
     private val buttons: MutableCollection<ImageButton> = arrayListOf()
 

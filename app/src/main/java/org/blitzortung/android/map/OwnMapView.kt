@@ -19,6 +19,7 @@
 package org.blitzortung.android.map
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.util.Log
@@ -27,9 +28,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import com.github.salomonbrys.kodein.android.appKodein
+import com.github.salomonbrys.kodein.instance
 import com.google.android.maps.MapView
-import org.blitzortung.android.app.BOApplication
-import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.util.LOG_TAG
@@ -44,14 +45,11 @@ class OwnMapView : MapView {
 
     private var oldPixelSize = -1f
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-    }
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
-    }
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
-    constructor(context: Context, apiKey: String) : super(context, apiKey) {
-    }
+    constructor(context: Context, apiKey: String) : super(context, apiKey)
 
     inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onDoubleTap(event: MotionEvent): Boolean {
@@ -72,7 +70,7 @@ class OwnMapView : MapView {
             Log.v(LOG_TAG, "GestureListener.onLongPress() $point")
             val context = this@OwnMapView.context
             val locationText = context.resources.getString(R.string.set_manual_location)
-            val preferences = BOApplication.sharedPreferences
+            val preferences = context.appKodein().instance<SharedPreferences>()
             val editor = preferences.edit()
             editor.putString(PreferenceKey.LOCATION_LONGITUDE.toString(), longitude.toString())
             editor.putString(PreferenceKey.LOCATION_LATITUDE.toString(), latitude.toString())
