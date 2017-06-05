@@ -19,7 +19,6 @@
 package org.blitzortung.android.app.controller
 
 import android.app.Activity
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
@@ -28,7 +27,7 @@ import org.blitzortung.android.app.*
 import org.blitzortung.android.data.DataChannel
 import org.blitzortung.android.data.DataHandler
 import org.blitzortung.android.data.provider.result.ResultEvent
-import org.blitzortung.android.protocol.Event
+import org.blitzortung.android.common.protocol.Event
 
 class HistoryController(private val activity: Activity, private val buttonHandler: ButtonColumnHandler<ImageButton, ButtonGroup>) {
 

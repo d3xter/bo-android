@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.util.Log
 import org.blitzortung.android.app.event.BackgroundModeEvent
-import org.blitzortung.android.protocol.ConsumerContainer
+import org.blitzortung.android.common.protocol.ConsumerContainer
 
 class BackgroundModeHandler(private val context: Context)  {
     val handler = Handler(context.mainLooper)

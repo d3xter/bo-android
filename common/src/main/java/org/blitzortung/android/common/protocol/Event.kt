@@ -16,6 +16,6 @@
 
 */
 
-package org.blitzortung.android.protocol
+package org.blitzortung.android.common.protocol
 
 interface Event

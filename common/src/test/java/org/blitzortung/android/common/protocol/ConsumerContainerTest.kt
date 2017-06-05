@@ -1,4 +1,4 @@
-package org.blitzortung.android.protocol
+package org.blitzortung.android.common.protocol
 
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.KotlinAssertions.assertThat

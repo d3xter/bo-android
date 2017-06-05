@@ -18,6 +18,6 @@
 
 package org.blitzortung.android.alert.event
 
-import org.blitzortung.android.protocol.Event
+import org.blitzortung.android.common.protocol.Event
 
 interface AlertEvent : Event

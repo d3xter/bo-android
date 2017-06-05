@@ -32,7 +32,7 @@ import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.location.provider.LocationProvider
 import org.blitzortung.android.location.provider.ManagerLocationProvider
 import org.blitzortung.android.location.provider.createLocationProvider
-import org.blitzortung.android.protocol.ConsumerContainer
+import org.blitzortung.android.common.protocol.ConsumerContainer
 import org.jetbrains.anko.longToast
 
 open class LocationHandler(

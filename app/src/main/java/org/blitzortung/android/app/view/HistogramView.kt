@@ -29,7 +29,7 @@ import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
 import org.blitzortung.android.data.provider.result.ResultEvent
 import org.blitzortung.android.map.overlay.StrikesOverlay
-import org.blitzortung.android.protocol.Event
+import org.blitzortung.android.common.protocol.Event
 import org.blitzortung.android.util.TabletAwareView
 
 class HistogramView @JvmOverloads constructor(

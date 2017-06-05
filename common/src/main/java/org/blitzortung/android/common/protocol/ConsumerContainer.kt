@@ -16,9 +16,7 @@
 
 */
 
-package org.blitzortung.android.protocol
-
-import java.util.*
+package org.blitzortung.android.common.protocol
 
 open class ConsumerContainer<P> {
 
@@ -27,7 +25,7 @@ open class ConsumerContainer<P> {
     private var currentPayload: P? = null
 
     init {
-        consumers = HashSet<(P) -> Unit>()
+        consumers = java.util.HashSet<(P) -> Unit>()
     }
 
     open fun addConsumer(consumer: ((P) -> Unit)?) {

@@ -32,7 +32,7 @@ import org.blitzortung.android.data.provider.DataProviderType
 import org.blitzortung.android.data.provider.result.DataEvent
 import org.blitzortung.android.data.provider.result.RequestStartedEvent
 import org.blitzortung.android.data.provider.result.ResultEvent
-import org.blitzortung.android.protocol.ConsumerContainer
+import org.blitzortung.android.common.protocol.ConsumerContainer
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
 import java.util.*
