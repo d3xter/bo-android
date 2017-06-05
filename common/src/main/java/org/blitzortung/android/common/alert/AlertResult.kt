@@ -16,9 +16,9 @@
 
 */
 
-package org.blitzortung.android.alert
+package org.blitzortung.android.common.alert
 
-import org.blitzortung.android.alert.data.AlertSector
+import org.blitzortung.android.common.alert.data.AlertSector
 
 data class AlertResult(
         val sectors: List<AlertSector>,

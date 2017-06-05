@@ -26,9 +26,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import org.blitzortung.android.alert.AlertResult
-import org.blitzortung.android.alert.event.AlertEvent
-import org.blitzortung.android.alert.event.AlertResultEvent
+import org.blitzortung.android.common.alert.AlertResult
+import org.blitzortung.android.common.alert.event.AlertEvent
+import org.blitzortung.android.common.alert.event.AlertResultEvent
 import org.blitzortung.android.alert.handler.AlertHandler
 
 import org.blitzortung.android.app.Main

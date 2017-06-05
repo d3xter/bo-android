@@ -16,11 +16,15 @@
 
 */
 
-package org.blitzortung.android.alert.data
+package org.blitzortung.android.common.alert
 
-data class AlertSectorRange(
-        val rangeMinimum: Float,
-        val rangeMaximum: Float,
-        val strikeCount: Int,
-        val latestStrikeTimestamp: Long
-) {}
+import org.blitzortung.android.common.util.MeasurementSystem
+
+data class AlertParameters(
+        val alarmInterval: Long,
+        val rangeSteps: Array<Float>,
+        val sectorLabels: Array<String>,
+        val measurementSystem: MeasurementSystem
+) {
+}
+

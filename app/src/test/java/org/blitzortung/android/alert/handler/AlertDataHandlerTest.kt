@@ -2,8 +2,8 @@ package org.blitzortung.android.alert.handler
 
 import android.location.Location
 import org.assertj.core.api.KotlinAssertions.assertThat
-import org.blitzortung.android.alert.AlertParameters
-import org.blitzortung.android.alert.AlertResult
+import org.blitzortung.android.common.alert.AlertParameters
+import org.blitzortung.android.common.alert.AlertResult
 import org.blitzortung.android.data.beans.DefaultStrike
 import org.blitzortung.android.common.util.MeasurementSystem
 import org.junit.Before

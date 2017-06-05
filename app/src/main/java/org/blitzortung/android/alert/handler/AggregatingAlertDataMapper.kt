@@ -1,7 +1,7 @@
 package org.blitzortung.android.alert.handler
 
-import org.blitzortung.android.alert.data.AlertSector
-import org.blitzortung.android.alert.data.AlertSectorRange
+import org.blitzortung.android.common.alert.data.AlertSector
+import org.blitzortung.android.common.alert.data.AlertSectorRange
 
 internal class AggregatingAlertDataMapper {
     fun mapSector(aggregatingAlertSector: AggregatingAlertSector): AlertSector {

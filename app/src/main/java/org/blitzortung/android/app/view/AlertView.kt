@@ -26,10 +26,10 @@ import android.location.Location
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import org.blitzortung.android.alert.AlertResult
-import org.blitzortung.android.alert.data.AlertSector
-import org.blitzortung.android.alert.event.AlertEvent
-import org.blitzortung.android.alert.event.AlertResultEvent
+import org.blitzortung.android.common.alert.AlertResult
+import org.blitzortung.android.common.alert.data.AlertSector
+import org.blitzortung.android.common.alert.event.AlertEvent
+import org.blitzortung.android.common.alert.event.AlertResultEvent
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
 import org.blitzortung.android.location.LocationEvent

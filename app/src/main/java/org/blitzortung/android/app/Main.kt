@@ -41,7 +41,7 @@ import android.widget.Toast
 import com.google.android.maps.GeoPoint
 import kotlinx.android.synthetic.main.map_overlay.*
 import kotlinx.android.synthetic.main.overlay_top.*
-import org.blitzortung.android.alert.event.AlertResultEvent
+import org.blitzortung.android.common.alert.event.AlertResultEvent
 import org.blitzortung.android.alert.handler.AlertHandler
 import org.blitzortung.android.app.components.VersionComponent
 import org.blitzortung.android.app.controller.ButtonColumnHandler

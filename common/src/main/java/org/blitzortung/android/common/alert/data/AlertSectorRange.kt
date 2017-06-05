@@ -16,12 +16,11 @@
 
 */
 
-package org.blitzortung.android.alert.data
+package org.blitzortung.android.common.alert.data
 
-data class AlertSector(
-        val label: String,
-        val minimumSectorBearing: Float,
-        val maximumSectorBearing: Float,
-        val ranges: List<AlertSectorRange>,
-        val closestStrikeDistance: Float
+data class AlertSectorRange(
+        val rangeMinimum: Float,
+        val rangeMaximum: Float,
+        val strikeCount: Int,
+        val latestStrikeTimestamp: Long
 ) {}

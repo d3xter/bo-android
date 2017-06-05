@@ -16,8 +16,12 @@
 
 */
 
-package org.blitzortung.android.alert.event
+package org.blitzortung.android.common.alert.data
 
-import org.blitzortung.android.common.protocol.Event
-
-interface AlertEvent : Event
+data class AlertSector(
+        val label: String,
+        val minimumSectorBearing: Float,
+        val maximumSectorBearing: Float,
+        val ranges: List<AlertSectorRange>,
+        val closestStrikeDistance: Float
+) {}

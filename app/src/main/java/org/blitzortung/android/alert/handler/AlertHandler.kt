@@ -23,11 +23,11 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.location.Location
 import android.util.Log
-import org.blitzortung.android.alert.AlertParameters
-import org.blitzortung.android.alert.AlertResult
-import org.blitzortung.android.alert.event.AlertCancelEvent
-import org.blitzortung.android.alert.event.AlertEvent
-import org.blitzortung.android.alert.event.AlertResultEvent
+import org.blitzortung.android.common.alert.AlertParameters
+import org.blitzortung.android.common.alert.AlertResult
+import org.blitzortung.android.common.alert.event.AlertCancelEvent
+import org.blitzortung.android.common.alert.event.AlertEvent
+import org.blitzortung.android.common.alert.event.AlertResultEvent
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
 import org.blitzortung.android.common.preferences.PreferenceKey

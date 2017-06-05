@@ -16,10 +16,10 @@
 
 */
 
-package org.blitzortung.android.alert.event
+package org.blitzortung.android.common.alert.event
 
-import org.blitzortung.android.alert.AlertResult
-
-data class AlertResultEvent(
-        val alertResult: AlertResult?
-) : AlertEvent
+class AlertCancelEvent : AlertEvent {
+    override fun toString(): String {
+        return "AlertCancelEvent()"
+    }
+}

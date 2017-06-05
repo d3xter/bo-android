@@ -25,8 +25,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import org.blitzortung.android.alert.AlertLabel
 import org.blitzortung.android.alert.AlertLabelHandler
-import org.blitzortung.android.alert.event.AlertEvent
-import org.blitzortung.android.alert.event.AlertResultEvent
+import org.blitzortung.android.common.alert.event.AlertEvent
+import org.blitzortung.android.common.alert.event.AlertResultEvent
 import org.blitzortung.android.app.R
 
 class StatusComponent(activity: Activity) : AlertLabel {

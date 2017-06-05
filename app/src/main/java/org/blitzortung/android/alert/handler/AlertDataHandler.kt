@@ -19,9 +19,9 @@
 package org.blitzortung.android.alert.handler
 
 import android.location.Location
-import org.blitzortung.android.alert.AlertParameters
-import org.blitzortung.android.alert.AlertResult
-import org.blitzortung.android.alert.data.AlertSector
+import org.blitzortung.android.common.alert.AlertParameters
+import org.blitzortung.android.common.alert.AlertResult
+import org.blitzortung.android.common.alert.data.AlertSector
 import org.blitzortung.android.data.beans.Strike
 import org.blitzortung.android.common.util.MeasurementSystem
 
@@ -32,7 +32,7 @@ open class AlertDataHandler internal constructor(
     private val strikeLocation: Location = Location("")
 
     fun checkStrikes(strikes: Collection<Strike>, location: Location, parameters: AlertParameters,
-            referenceTime: Long = System.currentTimeMillis()): AlertResult {
+                     referenceTime: Long = System.currentTimeMillis()): AlertResult {
         val sectors = createSectors(parameters)
 
         val thresholdTime = referenceTime - parameters.alarmInterval

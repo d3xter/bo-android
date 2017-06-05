@@ -21,6 +21,7 @@ package org.blitzortung.android.alert
 import android.content.res.Resources
 
 import org.blitzortung.android.app.R
+import org.blitzortung.android.common.alert.AlertResult
 
 class AlertLabelHandler(
         private val alertLabel: AlertLabel,

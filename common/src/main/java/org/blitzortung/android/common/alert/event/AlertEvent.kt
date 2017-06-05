@@ -16,10 +16,8 @@
 
 */
 
-package org.blitzortung.android.alert.event
+package org.blitzortung.android.common.alert.event
 
-class AlertCancelEvent : AlertEvent {
-    override fun toString(): String {
-        return "AlertCancelEvent()"
-    }
-}
+import org.blitzortung.android.common.protocol.Event
+
+interface AlertEvent : Event

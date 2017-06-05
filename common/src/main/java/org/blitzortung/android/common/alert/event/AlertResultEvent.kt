@@ -16,15 +16,10 @@
 
 */
 
-package org.blitzortung.android.alert
+package org.blitzortung.android.common.alert.event
 
-import org.blitzortung.android.common.util.MeasurementSystem
+import org.blitzortung.android.common.alert.AlertResult
 
-data class AlertParameters(
-        val alarmInterval: Long,
-        val rangeSteps: Array<Float>,
-        val sectorLabels: Array<String>,
-        val measurementSystem: MeasurementSystem
-) {
-}
-
+data class AlertResultEvent(
+        val alertResult: AlertResult?
+) : AlertEvent
