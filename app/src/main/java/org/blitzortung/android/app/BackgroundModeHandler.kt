@@ -5,6 +5,7 @@ import android.os.Handler
 import android.util.Log
 import org.blitzortung.android.app.event.BackgroundModeEvent
 import org.blitzortung.android.common.protocol.ConsumerContainer
+import org.blitzortung.android.common.util.LOG_TAG
 
 class BackgroundModeHandler(private val context: Context)  {
     val handler = Handler(context.mainLooper)
@@ -43,7 +44,7 @@ class BackgroundModeHandler(private val context: Context)  {
 
     fun sendUpdates(isInBackground: Boolean) {
         consumerContainer.storeAndBroadcast(BackgroundModeEvent(isInBackground))
-        Log.d(Main.LOG_TAG, "BackgroundModeHandler: Broadcasted isInBackground: $isInBackground")
+        Log.d(LOG_TAG, "BackgroundModeHandler: Broadcasted isInBackground: $isInBackground")
     }
 
     fun requestUpdates(consumer: (BackgroundModeEvent) -> Unit) {

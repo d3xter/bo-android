@@ -30,6 +30,7 @@ import org.blitzortung.android.app.R
 import org.blitzortung.android.data.provider.result.ResultEvent
 import org.blitzortung.android.map.overlay.StrikesOverlay
 import org.blitzortung.android.common.protocol.Event
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.util.TabletAwareView
 
 class HistogramView @JvmOverloads constructor(
@@ -152,7 +153,7 @@ class HistogramView @JvmOverloads constructor(
                 return false
             }
 
-            Log.v(Main.LOG_TAG, "HistogramView create histogram from ${result.totalStrikes.size} total strikes")
+            Log.v(LOG_TAG, "HistogramView create histogram from ${result.totalStrikes.size} total strikes")
             val referenceTime = result.referenceTime
 
             val binInterval = 5

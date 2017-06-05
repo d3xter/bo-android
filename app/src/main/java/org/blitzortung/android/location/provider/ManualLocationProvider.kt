@@ -6,6 +6,7 @@ import android.util.Log
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.getAndConvert
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.location.LocationHandler
 
 class ManualLocationProvider(locationUpdate: (Location?) -> Unit, private val sharedPreferences: SharedPreferences) : LocationProvider(locationUpdate), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -20,7 +21,7 @@ class ManualLocationProvider(locationUpdate: (Location?) -> Unit, private val sh
             try {
                 return x.toDouble()
             } catch (e: NumberFormatException) {
-                Log.e(Main.LOG_TAG, "bad longitude/latitude number format '$x'")
+                Log.e(LOG_TAG, "bad longitude/latitude number format '$x'")
             }
 
             return null

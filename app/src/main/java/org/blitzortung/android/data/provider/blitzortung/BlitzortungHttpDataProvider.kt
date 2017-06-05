@@ -23,6 +23,7 @@ import android.util.Log
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.data.Parameters
 import org.blitzortung.android.data.beans.Station
 import org.blitzortung.android.data.beans.Strike
@@ -65,7 +66,7 @@ class BlitzortungHttpDataProvider @JvmOverloads constructor(
 
         val urlString = urlFormatter.getUrlFor(type, region, intervalTime, useGzipCompression)
 
-        Log.v(Main.LOG_TAG, "BlitzortungHttpDataProvider.readFromUrl() $urlString")
+        Log.v(LOG_TAG, "BlitzortungHttpDataProvider.readFromUrl() $urlString")
 
         try {
             val url: URL
@@ -81,7 +82,7 @@ class BlitzortungHttpDataProvider @JvmOverloads constructor(
 
             reader = inputStream.bufferedReader()
         } catch (e: FileNotFoundException) {
-            Log.w(Main.LOG_TAG, "BlitzortungHttpDataProvider.readFromUrl() URL $urlString not found")
+            Log.w(LOG_TAG, "BlitzortungHttpDataProvider.readFromUrl() URL $urlString not found")
             return null
         }
 
@@ -107,7 +108,7 @@ class BlitzortungHttpDataProvider @JvmOverloads constructor(
 
         val strikeList = strikeSequence.toList()
 
-        Log.v(Main.LOG_TAG, logMessage.format(size, strikeList.count()))
+        Log.v(LOG_TAG, logMessage.format(size, strikeList.count()))
 
         return strikeList
     }
@@ -171,7 +172,7 @@ class BlitzortungHttpDataProvider @JvmOverloads constructor(
 
             if (strikes.count() > 0) {
                 latestTime = endTime - millisecondsPerMinute
-                Log.v(Main.LOG_TAG, "BlitzortungHttpDataProvider.getStrikes() set latest time to $latestTime")
+                Log.v(LOG_TAG, "BlitzortungHttpDataProvider.getStrikes() set latest time to $latestTime")
             }
 
             resultVar = resultVar.copy(strikes = strikes, totalStrikes = this@BlitzortungHttpDataProvider.strikes, referenceTime = endTime)

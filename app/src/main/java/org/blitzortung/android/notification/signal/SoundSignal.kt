@@ -7,6 +7,7 @@ import android.media.Ringtone
 import android.os.Build
 import android.util.Log
 import org.blitzortung.android.app.Main
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.common.util.isAtLeast
 
 open class SoundSignal(
@@ -27,10 +28,10 @@ open class SoundSignal(
                 }
                 ringtone.play()
 
-                Log.v(Main.LOG_TAG, "SoundSignal: playing " + ringtone.getTitle(context))
+                Log.v(LOG_TAG, "SoundSignal: playing " + ringtone.getTitle(context))
             }
         } else {
-            Log.w(Main.LOG_TAG, "SoundSignal: could not create ringtone")
+            Log.w(LOG_TAG, "SoundSignal: could not create ringtone")
         }
     }
 }

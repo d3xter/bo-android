@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import org.blitzortung.android.app.components.VersionComponent
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.dialogs.AlertDialog
 import org.blitzortung.android.dialogs.AlertDialogColorHandler
 import org.blitzortung.android.dialogs.InfoDialog
@@ -45,6 +46,6 @@ class MainPopupMenu(private val context: Context, anchor: View) : PopupMenu(cont
     fun showPopupMenu() {
         inflate(R.menu.main_menu)
         show()
-        Log.v(Main.LOG_TAG, "MainPopupMenu.showPopupMenu()")
+        Log.v(LOG_TAG, "MainPopupMenu.showPopupMenu()")
     }
 }

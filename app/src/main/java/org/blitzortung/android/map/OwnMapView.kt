@@ -32,6 +32,7 @@ import org.blitzortung.android.app.BOApplication
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
 import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.location.LocationHandler
 import java.util.*
 
@@ -68,7 +69,7 @@ class OwnMapView : MapView {
             val point = getPoint(event)
             val longitude = point.longitudeE6 / 1e6
             val latitude = point.latitudeE6 / 1e6
-            Log.v(Main.LOG_TAG, "GestureListener.onLongPress() $point")
+            Log.v(LOG_TAG, "GestureListener.onLongPress() $point")
             val context = this@OwnMapView.context
             val locationText = context.resources.getString(R.string.set_manual_location)
             val preferences = BOApplication.sharedPreferences

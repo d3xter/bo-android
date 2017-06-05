@@ -3,6 +3,7 @@ package org.blitzortung.android.location.provider
 import android.location.Location
 import android.util.Log
 import org.blitzortung.android.app.Main
+import org.blitzortung.android.common.util.LOG_TAG
 
 abstract class LocationProvider(protected val locationUpdate: (Location?) -> Unit) {
     var isRunning: Boolean = false
@@ -26,7 +27,7 @@ abstract class LocationProvider(protected val locationUpdate: (Location?) -> Uni
 
     open fun start() {
         isRunning = true
-        Log.v(Main.LOG_TAG, "LocationProvider.start() type: $type" )
+        Log.v(LOG_TAG, "LocationProvider.start() type: $type" )
     }
 
     open fun shutdown(invalidateLocation: Boolean = true) {
@@ -36,7 +37,7 @@ abstract class LocationProvider(protected val locationUpdate: (Location?) -> Uni
             sendLocationUpdate(null)
         }
 
-        Log.v(Main.LOG_TAG, "LocationProvider.shutdown() type: $type" )
+        Log.v(LOG_TAG, "LocationProvider.shutdown() type: $type" )
     }
 
     fun restart() {

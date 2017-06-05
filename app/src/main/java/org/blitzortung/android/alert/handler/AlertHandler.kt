@@ -39,6 +39,7 @@ import org.blitzortung.android.location.LocationEvent
 import org.blitzortung.android.location.LocationHandler
 import org.blitzortung.android.common.protocol.ConsumerContainer
 import org.blitzortung.android.common.protocol.Event
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.common.util.MeasurementSystem
 
 
@@ -57,11 +58,11 @@ class AlertHandler(
 
     val alertConsumerContainer: ConsumerContainer<AlertEvent> = object : ConsumerContainer<AlertEvent>() {
         override fun addedFirstConsumer() {
-            Log.d(Main.LOG_TAG, "AlertHandler: added first alert consumer")
+            Log.d(LOG_TAG, "AlertHandler: added first alert consumer")
         }
 
         override fun removedLastConsumer() {
-            Log.d(Main.LOG_TAG, "AlertHandler: removed last alert consumer")
+            Log.d(LOG_TAG, "AlertHandler: removed last alert consumer")
         }
     }
 
@@ -74,7 +75,7 @@ class AlertHandler(
         get() = preferences.get(PreferenceKey.ALERT_ENABLED, false)
 
     val locationEventConsumer: (LocationEvent) -> Unit = { event ->
-        Log.v(Main.LOG_TAG, "AlertHandler: received location " + currentLocation + " vs " + event.location)
+        Log.v(LOG_TAG, "AlertHandler: received location " + currentLocation + " vs " + event.location)
         currentLocation = event.location
         checkStrikes(lastStrikes)
     }
@@ -156,16 +157,16 @@ class AlertHandler(
     }
 
     private fun broadcastEvent() {
-        Log.v(Main.LOG_TAG, "AlertHandler.broadcastResult() $alertEvent")
+        Log.v(LOG_TAG, "AlertHandler.broadcastResult() $alertEvent")
 
         alertConsumerContainer.storeAndBroadcast(alertEvent)
     }
 
     private fun processResult(alertResult: AlertResult?) {
         if (alertResult != null) {
-            Log.v(Main.LOG_TAG, "AlertHandler.processResult() broadcast result %s".format(alertResult))
+            Log.v(LOG_TAG, "AlertHandler.processResult() broadcast result %s".format(alertResult))
         } else {
-            Log.v(Main.LOG_TAG, "AlertHandler.processResult() no result")
+            Log.v(LOG_TAG, "AlertHandler.processResult() no result")
         }
 
         broadcastResult(alertResult)

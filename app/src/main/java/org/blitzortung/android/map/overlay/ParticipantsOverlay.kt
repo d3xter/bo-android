@@ -26,6 +26,7 @@ import com.google.android.maps.ItemizedOverlay
 
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.data.beans.Station
 import org.blitzortung.android.data.beans.Station.State
 import org.blitzortung.android.map.OwnMapActivity
@@ -74,7 +75,7 @@ class ParticipantsOverlay(mapActivity: OwnMapActivity, private val colorHandler:
     }
 
     fun setParticipants(stations: List<Station>) {
-        Log.v(Main.LOG_TAG, "ParticipantsOverlay.setStations() #%d".format(stations.size))
+        Log.v(LOG_TAG, "ParticipantsOverlay.setStations() #%d".format(stations.size))
         updateShapes()
 
         participants.clear()
@@ -83,11 +84,11 @@ class ParticipantsOverlay(mapActivity: OwnMapActivity, private val colorHandler:
             item.setMarker(shapes[item.participantState])
             participants.add(item)
         }
-        Log.v(Main.LOG_TAG, "ParticipantsOverlay.setStations() set")
+        Log.v(LOG_TAG, "ParticipantsOverlay.setStations() set")
         lastFocusedIndex = -1
 
         populate()
-        Log.v(Main.LOG_TAG, "ParticipantsOverlay.setStations() finished")
+        Log.v(LOG_TAG, "ParticipantsOverlay.setStations() finished")
     }
 
     fun clear() {

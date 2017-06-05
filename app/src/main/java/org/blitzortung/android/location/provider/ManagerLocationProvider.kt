@@ -6,6 +6,7 @@ import android.location.LocationListener
 import android.os.Bundle
 import android.util.Log
 import org.blitzortung.android.app.Main
+import org.blitzortung.android.common.util.LOG_TAG
 import org.jetbrains.anko.locationManager
 
 abstract class ManagerLocationProvider(
@@ -26,20 +27,20 @@ abstract class ManagerLocationProvider(
     override fun start() {
         //Don't start the LocationProvider if we dont have any permissions
         if (!this.isPermissionGranted) {
-            Log.d(Main.LOG_TAG, "Tried to start provider '$type' without permission granted")
+            Log.d(LOG_TAG, "Tried to start provider '$type' without permission granted")
             return
         }
 
-        Log.v(Main.LOG_TAG, "LocationProvider: Starting provider '$type' with backgroundMode '$backgroundMode'")
+        Log.v(LOG_TAG, "LocationProvider: Starting provider '$type' with backgroundMode '$backgroundMode'")
 
         super.start()
 
-        Log.v(Main.LOG_TAG, "ManagerLocationProvider.start() background: $backgroundMode, type: $type, minTime: $minTime, minDistance: $minDistance")
+        Log.v(LOG_TAG, "ManagerLocationProvider.start() background: $backgroundMode, type: $type, minTime: $minTime, minDistance: $minDistance")
         locationManager.requestLocationUpdates(type, minTime, minDistance, this)
     }
 
     override fun onLocationChanged(location: Location?) {
-        Log.v(Main.LOG_TAG, "LocationProvider: Sending location which we received from the manager (is Location = ${location is Location})")
+        Log.v(LOG_TAG, "LocationProvider: Sending location which we received from the manager (is Location = ${location is Location})")
         //Don't send NULL locations to the listeners
         if (location is Location) {
             sendLocationUpdate(location)

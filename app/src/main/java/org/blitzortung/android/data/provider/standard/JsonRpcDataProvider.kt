@@ -23,6 +23,7 @@ import android.util.Log
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.data.Parameters
 import org.blitzortung.android.data.beans.Station
 import org.blitzortung.android.data.beans.Strike
@@ -50,7 +51,7 @@ class JsonRpcDataProvider(
     init {
         dataBuilder = DataBuilder()
 
-        Log.v(Main.LOG_TAG, "JsonRpcDataProvider($serviceUrl)")
+        Log.v(LOG_TAG, "JsonRpcDataProvider($serviceUrl)")
     }
 
     override val type: DataProviderType = DataProviderType.RPC
@@ -168,7 +169,7 @@ class JsonRpcDataProvider(
                 throw RuntimeException(e)
             }
 
-            Log.v(Main.LOG_TAG,
+            Log.v(LOG_TAG,
                     "JsonRpcDataProvider: read %d bytes (%d raster positions, region %d)".format(client.lastNumberOfTransferredBytes, resultVar.strikes?.size, region))
             return resultVar
         }
@@ -191,7 +192,7 @@ class JsonRpcDataProvider(
                 throw RuntimeException(e)
             }
 
-            Log.v(Main.LOG_TAG,
+            Log.v(LOG_TAG,
                     "JsonRpcDataProvider: read %d bytes (%d new strikes)".format(client.lastNumberOfTransferredBytes, resultVar.strikes?.size))
             return resultVar
         }
@@ -211,7 +212,7 @@ class JsonRpcDataProvider(
         try {
             URL(serviceUrl)
         } catch (e: Exception) {
-            Log.e(Main.LOG_TAG, "JsonRpcDataProvider.tocheckedUrl($serviceUrl) invalid")
+            Log.e(LOG_TAG, "JsonRpcDataProvider.tocheckedUrl($serviceUrl) invalid")
             return DEFAULT_SERVICE_URL
         }
         return serviceUrl

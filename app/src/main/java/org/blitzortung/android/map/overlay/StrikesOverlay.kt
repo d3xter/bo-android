@@ -30,6 +30,7 @@ import com.google.android.maps.ItemizedOverlay
 import com.google.android.maps.MapView
 import org.blitzortung.android.app.Main
 import org.blitzortung.android.app.R
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.data.Parameters
 import org.blitzortung.android.data.beans.RasterParameters
 import org.blitzortung.android.data.beans.Strike
@@ -99,7 +100,7 @@ class StrikesOverlay(mapActivity: OwnMapActivity, private val colorHandler: Stri
     }
 
     fun addStrikes(strikes: List<Strike>) {
-        Log.v(Main.LOG_TAG, "StrikesOverlay.addStrikes() #" + strikes.size)
+        Log.v(LOG_TAG, "StrikesOverlay.addStrikes() #" + strikes.size)
         this.strikes += strikes.map { StrikeOverlayItem(it) }
         lastFocusedIndex = -1
         populate()
@@ -110,7 +111,7 @@ class StrikesOverlay(mapActivity: OwnMapActivity, private val colorHandler: Stri
 
         val sizeBefore = strikes.size
         strikes = strikes.filter { it.timestamp > expireTime }
-        Log.v(Main.LOG_TAG, "StrikesOverlay.expireStrikes() expired ${sizeBefore - strikes.size} from $sizeBefore")
+        Log.v(LOG_TAG, "StrikesOverlay.expireStrikes() expired ${sizeBefore - strikes.size} from $sizeBefore")
     }
 
     fun clear() {

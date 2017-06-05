@@ -50,6 +50,7 @@ import org.blitzortung.android.app.view.components.StatusComponent
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.common.preferences.put
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.data.provider.result.DataEvent
 import org.blitzortung.android.data.provider.result.RequestStartedEvent
 import org.blitzortung.android.data.provider.result.ResultEvent
@@ -95,7 +96,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
 
     val dataEventConsumer: (DataEvent) -> Unit = { event ->
         if (event is RequestStartedEvent) {
-            Log.d(Main.LOG_TAG, "Main.onDataUpdate() received request started event")
+            Log.d(LOG_TAG, "Main.onDataUpdate() received request started event")
             statusComponent.startProgress()
         } else if (event is ResultEvent) {
 
@@ -103,7 +104,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
             if (!event.failed) {
                 currentResult = event
 
-                Log.d(Main.LOG_TAG, "Main.onDataUpdate() " + event)
+                Log.d(LOG_TAG, "Main.onDataUpdate() " + event)
 
                 val resultParameters = event.parameters!!
 
@@ -157,7 +158,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
         try {
             super.onCreate(savedInstanceState)
         } catch (e: NoClassDefFoundError) {
-            Log.e(Main.LOG_TAG, e.toString())
+            Log.e(LOG_TAG, e.toString())
             Toast.makeText(baseContext, "bad android version", Toast.LENGTH_LONG).show()
         }
 
@@ -223,7 +224,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
 
     private fun setupDebugModeButton() {
         val androidId = Settings.Secure.getString(baseContext.contentResolver, Settings.Secure.ANDROID_ID)
-        Log.v(Main.LOG_TAG, "AndroidId: $androidId")
+        Log.v(LOG_TAG, "AndroidId: $androidId")
         if ((androidId != null && androidIdsForExtendedFunctionality.contains(androidId))) {
             with(toggleExtendedMode) {
                 isEnabled = true
@@ -301,7 +302,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
     }
 
     private fun animateToLocationAndVisibleSize(longitude: Double, latitude: Double, diameter: Float) {
-        Log.d(Main.LOG_TAG, "Main.animateAndZoomTo() %.4f, %.4f, %.0fkm".format(longitude, latitude, diameter))
+        Log.d(LOG_TAG, "Main.animateAndZoomTo() %.4f, %.4f, %.0fkm".format(longitude, latitude, diameter))
 
         val mapView = mapView
         val controller = mapView.controller
@@ -346,7 +347,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
     override fun onStart() {
         super.onStart()
 
-        Log.d(Main.LOG_TAG, "Main.onStart()")
+        Log.d(LOG_TAG, "Main.onStart()")
     }
 
     private fun enableDataUpdates() {
@@ -370,7 +371,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
     override fun onRestart() {
         super.onRestart()
 
-        Log.d(Main.LOG_TAG, "Main.onRestart()")
+        Log.d(LOG_TAG, "Main.onRestart()")
     }
 
     override fun onResume() {
@@ -379,7 +380,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
         enableDataUpdates()
         backgroundModeHandler.updateBackgroundMode(false)
 
-        Log.d(Main.LOG_TAG, "Main.onResume()")
+        Log.d(LOG_TAG, "Main.onResume()")
     }
 
     override fun onPause() {
@@ -388,13 +389,13 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
         backgroundModeHandler.updateBackgroundMode(true)
         disableDataUpdates()
 
-        Log.v(Main.LOG_TAG, "Main.onPause()")
+        Log.v(LOG_TAG, "Main.onPause()")
     }
 
     override fun onStop() {
         super.onStop()
 
-        Log.v(Main.LOG_TAG, "Main.onStop()")
+        Log.v(LOG_TAG, "Main.onStop()")
     }
 
     private fun disableDataUpdates() {
@@ -431,7 +432,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
     }
 
     private fun clearData() {
-        Log.v(Main.LOG_TAG, "Main.clearData()")
+        Log.v(LOG_TAG, "Main.clearData()")
         clearData = false
 
         strikesOverlay.clear()
@@ -483,7 +484,7 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            Log.v(Main.LOG_TAG, "Main.onKeyUp(KEYCODE_MENU)")
+            Log.v(LOG_TAG, "Main.onKeyUp(KEYCODE_MENU)")
             showPopupMenu(upper_row)
             return true;
         }
@@ -579,9 +580,5 @@ class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
         if (isAtLeast(Build.VERSION_CODES.HONEYCOMB)) {
             actionBar?.hide()
         }
-    }
-
-    companion object {
-        val LOG_TAG = "BO_ANDROID"
     }
 }

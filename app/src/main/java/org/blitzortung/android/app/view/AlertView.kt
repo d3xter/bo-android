@@ -26,12 +26,12 @@ import android.location.Location
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import org.blitzortung.android.app.R
 import org.blitzortung.android.common.alert.AlertResult
 import org.blitzortung.android.common.alert.data.AlertSector
 import org.blitzortung.android.common.alert.event.AlertEvent
 import org.blitzortung.android.common.alert.event.AlertResultEvent
-import org.blitzortung.android.app.Main
-import org.blitzortung.android.app.R
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.location.LocationEvent
 import org.blitzortung.android.map.overlay.color.ColorHandler
 import org.blitzortung.android.util.TabletAwareView
@@ -58,7 +58,7 @@ class AlertView @JvmOverloads constructor(
     private var enableDescriptionText = false
 
     val alertEventConsumer: (AlertEvent?) -> Unit = { event ->
-        Log.v(Main.LOG_TAG, "AlertView alertEventConsumer received $event")
+        Log.v(LOG_TAG, "AlertView alertEventConsumer received $event")
         if (event is AlertResultEvent) {
             alertResult = event.alertResult
         } else {

@@ -21,7 +21,7 @@ package org.blitzortung.android.app.components
 import android.content.Context
 import android.util.Log
 import org.blitzortung.android.app.BuildConfig
-import org.blitzortung.android.app.Main
+import org.blitzortung.android.common.util.LOG_TAG
 
 class VersionComponent(context: Context) {
 
@@ -48,7 +48,7 @@ class VersionComponent(context: Context) {
             else -> State.NO_UPDATE
         }
 
-        Log.d(Main.LOG_TAG, "updateVersionStatus() name=$packageName, state=$state, configuredVersion=$configuredVersionCode, currentVersion=$versionCode")
+        Log.d(LOG_TAG, "updateVersionStatus() name=$packageName, state=$state, configuredVersion=$configuredVersionCode, currentVersion=$versionCode")
     }
 
     enum class State {

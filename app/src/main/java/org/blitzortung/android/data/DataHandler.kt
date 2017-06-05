@@ -33,6 +33,7 @@ import org.blitzortung.android.data.provider.result.DataEvent
 import org.blitzortung.android.data.provider.result.RequestStartedEvent
 import org.blitzortung.android.data.provider.result.ResultEvent
 import org.blitzortung.android.common.protocol.ConsumerContainer
+import org.blitzortung.android.common.util.LOG_TAG
 import org.jetbrains.anko.async
 import org.jetbrains.anko.uiThread
 import java.util.*
@@ -55,11 +56,11 @@ class DataHandler @JvmOverloads constructor(
 
     private val dataConsumerContainer = object : ConsumerContainer<DataEvent>() {
         override fun addedFirstConsumer() {
-            Log.d(Main.LOG_TAG, "added first data consumer")
+            Log.d(LOG_TAG, "added first data consumer")
         }
 
         override fun removedLastConsumer() {
-            Log.d(Main.LOG_TAG, "removed last data consumer")
+            Log.d(LOG_TAG, "removed last data consumer")
         }
     }
 
@@ -113,9 +114,9 @@ class DataHandler @JvmOverloads constructor(
             if (wakeLock.isHeld) {
                 try {
                     wakeLock.release()
-                    Log.v(Main.LOG_TAG, "FetchBackgroundDataTask released wakelock " + wakeLock)
+                    Log.v(LOG_TAG, "FetchBackgroundDataTask released wakelock " + wakeLock)
                 } catch (e: RuntimeException) {
-                    Log.e(Main.LOG_TAG, "FetchBackgroundDataTask release wakelock failed ", e)
+                    Log.e(LOG_TAG, "FetchBackgroundDataTask release wakelock failed ", e)
                 }
 
             }

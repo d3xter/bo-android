@@ -22,6 +22,7 @@ import android.util.Log
 import com.google.android.maps.MapActivity
 import com.google.android.maps.Overlay
 import org.blitzortung.android.app.Main
+import org.blitzortung.android.common.util.LOG_TAG
 import org.blitzortung.android.map.overlay.LayerOverlay
 
 abstract class OwnMapActivity : MapActivity() {
@@ -59,7 +60,7 @@ abstract class OwnMapActivity : MapActivity() {
                 mConfigField.set(this, null)
             }
         } catch (e: Exception) {
-            Log.w(Main.LOG_TAG, "OwnMapActivity.onDestroy() failed")
+            Log.w(LOG_TAG, "OwnMapActivity.onDestroy() failed")
         }
 
     }

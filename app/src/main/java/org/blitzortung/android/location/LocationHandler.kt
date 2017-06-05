@@ -33,6 +33,7 @@ import org.blitzortung.android.location.provider.LocationProvider
 import org.blitzortung.android.location.provider.ManagerLocationProvider
 import org.blitzortung.android.location.provider.createLocationProvider
 import org.blitzortung.android.common.protocol.ConsumerContainer
+import org.blitzortung.android.common.util.LOG_TAG
 import org.jetbrains.anko.longToast
 
 open class LocationHandler(
@@ -58,7 +59,7 @@ open class LocationHandler(
             provider?.run {
                 if (!isRunning) {
                     start()
-                    Log.d(Main.LOG_TAG, "LocationHandler: enable provider")
+                    Log.d(LOG_TAG, "LocationHandler: enable provider")
                 }
             }
         }
@@ -66,7 +67,7 @@ open class LocationHandler(
         override fun removedLastConsumer() {
             provider?.run {
                 if (isRunning) {
-                    Log.d(Main.LOG_TAG, "LocationHandler: disable provider")
+                    Log.d(LOG_TAG, "LocationHandler: disable provider")
                     shutdown()
                 }
             }
