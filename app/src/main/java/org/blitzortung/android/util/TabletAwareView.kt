@@ -24,6 +24,7 @@ import android.util.AttributeSet
 import android.view.View
 import org.blitzortung.android.app.R
 import org.blitzortung.android.app.helper.ViewHelper
+import org.blitzortung.android.common.util.isAtLeast
 
 open class TabletAwareView(
         context: Context,

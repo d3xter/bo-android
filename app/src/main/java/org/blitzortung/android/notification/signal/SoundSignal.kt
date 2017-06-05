@@ -7,7 +7,7 @@ import android.media.Ringtone
 import android.os.Build
 import android.util.Log
 import org.blitzortung.android.app.Main
-import org.blitzortung.android.util.isAtLeast
+import org.blitzortung.android.common.util.isAtLeast
 
 open class SoundSignal(
         private val context: Context,

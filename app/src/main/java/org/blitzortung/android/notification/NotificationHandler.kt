@@ -37,7 +37,7 @@ import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListen
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.get
 import org.blitzortung.android.notification.signal.SignalManager
-import org.blitzortung.android.util.isAtLeast
+import org.blitzortung.android.common.util.isAtLeast
 import org.jetbrains.anko.notificationManager
 import kotlin.properties.Delegates
 

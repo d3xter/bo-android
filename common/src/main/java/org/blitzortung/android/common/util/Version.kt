@@ -16,7 +16,7 @@
 
 */
 
-package org.blitzortung.android.util
+package org.blitzortung.android.common.util
 
 fun isAtLeast(versionCode: Int) : Boolean {
     return android.os.Build.VERSION.SDK_INT >= versionCode

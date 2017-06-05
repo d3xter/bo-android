@@ -64,7 +64,7 @@ import org.blitzortung.android.map.overlay.StrikesOverlay
 import org.blitzortung.android.map.overlay.color.ParticipantColorHandler
 import org.blitzortung.android.map.overlay.color.StrikeColorHandler
 import org.blitzortung.android.util.TabletAwareView
-import org.blitzortung.android.util.isAtLeast
+import org.blitzortung.android.common.util.isAtLeast
 import org.jetbrains.anko.startService
 
 class Main : OwnMapActivity(), OnSharedPreferenceChangeListener {
