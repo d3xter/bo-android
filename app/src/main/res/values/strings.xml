@@ -246,8 +246,6 @@
         <item>1800</item>
     </string-array>
 
-    <item name="alarm_notification_id" type="id" />
-
     <string name="notification_distance_limit">Notification distance limit</string>
     <string name="notification_distance_limit_summary">if selected: show notification when lightning activity is
         detected within the selected range

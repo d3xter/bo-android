@@ -43,6 +43,9 @@ import kotlin.properties.Delegates
 
 class NotificationHandler(alertHandler: AlertHandler, sharedPreferences: SharedPreferences, private val context: Context): OnSharedPreferenceChangeListener {
 
+    //We need this id to be able to remove/update the lightning notifications
+    private val alarmNotificationID = 1
+
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: PreferenceKey) {
         when(key) {
             PreferenceKey.ALERT_NOTIFICATION_DISTANCE_LIMIT -> notificationDistanceLimit = sharedPreferences.get(key, "50").toFloat()
@@ -114,7 +117,7 @@ class NotificationHandler(alertHandler: AlertHandler, sharedPreferences: SharedP
             createLegacyNotification(contentIntent, notificationText)
         }
 
-        notificationService.notify(R.id.alarm_notification_id, notification)
+        notificationService.notify(alarmNotificationID, notification)
     }
 
     fun signal() {
@@ -138,6 +141,6 @@ class NotificationHandler(alertHandler: AlertHandler, sharedPreferences: SharedP
     }
 
     fun clearNotification() {
-        notificationService.cancel(R.id.alarm_notification_id)
+        notificationService.cancel(alarmNotificationID)
     }
 }

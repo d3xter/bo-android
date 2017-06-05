@@ -241,8 +241,6 @@
         <item>1800</item>
     </string-array>
 
-    <item name="alarm_notification_id" type="id" />
-
     <string name="notification_distance_limit">Dystans powiadomień</string>
     <string name="notification_distance_limit_summary">pokazuje powiadomienie jeżeli wykryto wyładowanie w określonym promieniu</string>
     <string name="signaling_distance_limit">Dystans alarmu</string>

@@ -244,8 +244,6 @@
         <item>1800</item>
     </string-array>
 
-    <item name="alarm_notification_id" type="id" />
-
     <string name="notification_distance_limit">Distancia límite de notificación</string>
     <string name="notification_distance_limit_summary">si es seleccionada: muestra una notificación cuando un rayo es 
     	detectado dentro del alcance seleccionado

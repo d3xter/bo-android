@@ -242,8 +242,6 @@
         <item>1800</item>
     </string-array>
 
-    <item name="alarm_notification_id" type="id" />
-
     <string name="notification_distance_limit">Limit vzdálenosti pro oznámení</string>
     <string name="notification_distance_limit_summary">Pokud je povoleno: zobrazí oznámení, pokud je detekována blesková aktivita v určené vzdálenosti
     </string>

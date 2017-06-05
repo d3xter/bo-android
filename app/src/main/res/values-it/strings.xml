@@ -248,8 +248,6 @@
         <item>1800</item>
     </string-array>
 
-    <item name="alarm_notification_id" type="id" />
-
     <string name="notification_distance_limit">Limite distanza notifiche</string>
     <string name="notification_distance_limit_summary">se selezionata: mostra una notifica quando viene rilevata attività di fulmini entro la distanza selezionata</string>
     <string name="signaling_distance_limit">Limite distanza avvisi</string>
