@@ -23,7 +23,7 @@ import org.blitzortung.android.alert.AlertParameters
 import org.blitzortung.android.alert.AlertResult
 import org.blitzortung.android.alert.data.AlertSector
 import org.blitzortung.android.data.beans.Strike
-import org.blitzortung.android.util.MeasurementSystem
+import org.blitzortung.android.common.util.MeasurementSystem
 
 open class AlertDataHandler internal constructor(
         private val aggregatingAlertDataMapper: AggregatingAlertDataMapper = AggregatingAlertDataMapper()
@@ -52,7 +52,7 @@ open class AlertDataHandler internal constructor(
     }
 
     internal fun checkStrike(sector: AggregatingAlertSector, strike: Strike, measurementSystem: MeasurementSystem,
-            location: Location, thresholdTime: Long) {
+                             location: Location, thresholdTime: Long) {
         val distance = calculateDistanceTo(location, strike, measurementSystem)
 
         sector.ranges.find { distance <= it.rangeMaximum }?.let {

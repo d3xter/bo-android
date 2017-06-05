@@ -1,4 +1,4 @@
-package org.blitzortung.android.util
+package org.blitzortung.android.common.util
 
 import org.assertj.core.api.KotlinAssertions.assertThat
 import org.junit.Test

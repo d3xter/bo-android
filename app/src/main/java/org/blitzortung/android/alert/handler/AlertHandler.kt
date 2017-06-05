@@ -39,7 +39,7 @@ import org.blitzortung.android.location.LocationEvent
 import org.blitzortung.android.location.LocationHandler
 import org.blitzortung.android.common.protocol.ConsumerContainer
 import org.blitzortung.android.common.protocol.Event
-import org.blitzortung.android.util.MeasurementSystem
+import org.blitzortung.android.common.util.MeasurementSystem
 
 
 class AlertHandler(

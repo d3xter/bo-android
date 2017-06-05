@@ -42,4 +42,6 @@ dependencies {
     compile "com.github.salomonbrys.kodein:kodein-android:$KODEIN_VERSION"
 
     testCompile 'junit:junit:4.12'
+    testCompile 'net.wuerl.kotlin:assertj-core-kotlin:0.1.1'
+    testCompile 'org.robolectric:robolectric:3.0'
 }

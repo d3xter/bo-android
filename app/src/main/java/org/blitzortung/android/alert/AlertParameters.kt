@@ -18,7 +18,7 @@
 
 package org.blitzortung.android.alert
 
-import org.blitzortung.android.util.MeasurementSystem
+import org.blitzortung.android.common.util.MeasurementSystem
 
 data class AlertParameters(
         val alarmInterval: Long,
