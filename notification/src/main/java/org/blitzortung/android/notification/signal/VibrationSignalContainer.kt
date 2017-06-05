@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import org.blitzortung.android.common.preferences.OnSharedPreferenceChangeListener
 import org.blitzortung.android.common.preferences.PreferenceKey
+import org.blitzortung.android.common.preferences.PreferenceProperty
 import org.blitzortung.android.common.preferences.get
 import org.jetbrains.anko.vibrator
 
@@ -13,27 +14,18 @@ class VibrationSignalContainer(
         val vibrationSignalProvider: (Long) -> VibrationSignal = { vibrationDuration ->
             defaultVibrationSignalProvider(context, vibrationDuration)
         }
-) : NotificationSignal, OnSharedPreferenceChangeListener {
+) : NotificationSignal {
 
     lateinit private var vibrationSignal: VibrationSignal
 
-    init {
-        preferences.registerOnSharedPreferenceChangeListener(this)
-        onSharedPreferencesChanged(preferences, PreferenceKey.ALERT_VIBRATION_SIGNAL)
+    private val vibrationLength: Int by PreferenceProperty(preferences, PreferenceKey.ALERT_VIBRATION_SIGNAL, 3) {
+        _, value ->
+
+        vibrationSignal = vibrationSignalProvider(value * 10L)
     }
 
     override fun signal() {
         vibrationSignal.signal()
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: PreferenceKey) {
-        @Suppress("NON_EXHAUSTIVE_WHEN")
-        when (key) {
-            PreferenceKey.ALERT_VIBRATION_SIGNAL -> {
-                val vibrationDuration = sharedPreferences.get(key, 3) * 10L
-                vibrationSignal = vibrationSignalProvider.invoke(vibrationDuration)
-            }
-        }
     }
 }
 
