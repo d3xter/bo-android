@@ -28,11 +28,7 @@ open class ConsumerContainer<P> {
         consumers = java.util.HashSet<(P) -> Unit>()
     }
 
-    open fun addConsumer(consumer: ((P) -> Unit)?) {
-        if (consumer == null) {
-            throw IllegalArgumentException("consumer may not be null")
-        }
-
+    open fun addConsumer(consumer: ((P) -> Unit)) {
         if (!consumers.contains(consumer)) {
             val isFirst = consumers.isEmpty()
             consumers.add(consumer)

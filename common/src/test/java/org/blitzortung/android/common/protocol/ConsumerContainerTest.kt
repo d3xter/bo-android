@@ -38,15 +38,6 @@ class ConsumerContainerTest {
     }
 
     @Test
-    fun addingNullConsumerShouldThrow() {
-        assertThatThrownBy {
-            testConsumerContainer.addConsumer(null)
-        }
-                .isInstanceOf(IllegalArgumentException::class.java)
-                .hasMessage("consumer may not be null")
-    }
-
-    @Test
     fun addedConsumerShouldReceiveNoDataWithNoCurrentPayloadSet() {
         var result: String? = null
         testConsumerContainer.addConsumer { string -> result = string }
