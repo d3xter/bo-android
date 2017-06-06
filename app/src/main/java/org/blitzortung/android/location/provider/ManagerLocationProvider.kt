@@ -37,6 +37,16 @@ abstract class ManagerLocationProvider(
 
         Log.v(LOG_TAG, "ManagerLocationProvider.start() background: $backgroundMode, type: $type, minTime: $minTime, minDistance: $minDistance")
         locationManager.requestLocationUpdates(type, minTime, minDistance, this)
+
+        //Now try to get the last known location from the current provider
+        val lastKnownLocation = locationManager.getLastKnownLocation(type)
+        if (lastKnownLocation != null) {
+            val secondsElapsedSinceLastFix = (System.currentTimeMillis() - lastKnownLocation.time) / 1000
+
+            if (secondsElapsedSinceLastFix < 10 && lastKnownLocation.isValid) {
+                sendLocationUpdate(lastKnownLocation)
+            }
+        }
     }
 
     override fun onLocationChanged(location: Location?) {
