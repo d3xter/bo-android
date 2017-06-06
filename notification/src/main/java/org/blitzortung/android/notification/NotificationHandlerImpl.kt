@@ -25,16 +25,19 @@ import android.content.SharedPreferences
 import org.blitzortung.android.common.alert.AlertResult
 import org.blitzortung.android.common.alert.event.AlertEvent
 import org.blitzortung.android.common.alert.event.AlertResultEvent
+import org.blitzortung.android.common.background.BackgroundModeEvent
 import org.blitzortung.android.common.preferences.PreferenceKey
 import org.blitzortung.android.common.preferences.StringToFloatPreferenceProperty
 import org.blitzortung.android.common.preferences.StringToLongPreferenceProperty
 import org.blitzortung.android.common.protocol.ConsumerContainer
+import org.blitzortung.android.common.protocol.ConsumerProperty
 import org.blitzortung.android.notification.builder.LightningNotificationBuilder
 import org.blitzortung.android.notification.signal.SignalManager
 import org.jetbrains.anko.notificationManager
 
 class NotificationHandlerImpl(alertContainer: ConsumerContainer<AlertEvent>,
                               sharedPreferences: SharedPreferences,
+                              backgroundModeContainer: ConsumerContainer<BackgroundModeEvent>,
                               private val context: Context,
                               private val activityString: String,
                               private val lightningNotificationBuilder: LightningNotificationBuilder
@@ -52,8 +55,12 @@ class NotificationHandlerImpl(alertContainer: ConsumerContainer<AlertEvent>,
     private var signalingThresholdTime: Long by StringToLongPreferenceProperty(sharedPreferences, PreferenceKey.ALERT_SIGNALING_THRESHOLD_TIME, "25")
     private var latestSignalingTime: Long = 0
 
+    private val backgroundMode: BackgroundModeEvent by ConsumerProperty(backgroundModeContainer)
+
     private val alertConsumer = {event: AlertEvent ->
-        if (event is AlertResultEvent) {
+
+        //Only display notifications when the app is closed
+        if (event is AlertResultEvent && backgroundMode.isInBackground) {
             val result = event.alertResult
 
             if(result != null) {

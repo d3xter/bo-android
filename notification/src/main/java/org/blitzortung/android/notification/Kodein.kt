@@ -13,10 +13,11 @@ fun createNotificationKodeinModule(ctx: Context, mainActivity: Class<*>): Kodein
     return Kodein.Module {
         bind<NotificationHandler>() with singleton {
             NotificationHandlerImpl(instance(),
-                sharedPreferences = instance(),
-                context = ctx,
-                activityString = instance("r.string.activity"),
-                lightningNotificationBuilder = instance())
+                    sharedPreferences = instance(),
+                    context = ctx,
+                    activityString = instance("r.string.activity"),
+                    lightningNotificationBuilder = instance(),
+                    backgroundModeContainer = instance())
         }
 
         bind<LightningNotificationBuilder>() with singleton {
