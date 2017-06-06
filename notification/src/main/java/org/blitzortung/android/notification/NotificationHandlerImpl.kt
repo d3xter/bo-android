@@ -55,7 +55,13 @@ class NotificationHandlerImpl(alertContainer: ConsumerContainer<AlertEvent>,
     private var signalingThresholdTime: Long by StringToLongPreferenceProperty(sharedPreferences, PreferenceKey.ALERT_SIGNALING_THRESHOLD_TIME, "25")
     private var latestSignalingTime: Long = 0
 
-    private val backgroundMode: BackgroundModeEvent by ConsumerProperty(backgroundModeContainer)
+    private val backgroundMode: BackgroundModeEvent by ConsumerProperty(backgroundModeContainer) {
+        oldValue, newValue ->
+
+        //If the user opens the app, delete current LightningNotifications
+        if(!oldValue.isInBackground && newValue.isInBackground)
+            clearLightningNotifications()
+    }
 
     private val alertConsumer = {event: AlertEvent ->
 
