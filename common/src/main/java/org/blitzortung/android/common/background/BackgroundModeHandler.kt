@@ -11,7 +11,7 @@ class BackgroundModeHandler(private val context: Context)  {
 
     private var runnable: Runnable? = null
 
-    private val consumerContainer = object : ConsumerContainer<BackgroundModeEvent>() {
+    val consumerContainer = object : ConsumerContainer<BackgroundModeEvent>() {
         override fun addedFirstConsumer() { }
 
         override fun removedLastConsumer() { }

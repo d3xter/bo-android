@@ -8,6 +8,7 @@ import com.github.salomonbrys.kodein.*
 import com.github.salomonbrys.kodein.android.autoAndroidModule
 import org.blitzortung.android.alert.handler.AlertHandler
 import org.blitzortung.android.common.alert.event.AlertEvent
+import org.blitzortung.android.common.background.BackgroundModeEvent
 import org.blitzortung.android.common.background.BackgroundModeHandler
 import org.blitzortung.android.common.protocol.ConsumerContainer
 import org.blitzortung.android.data.DataHandler
@@ -25,6 +26,8 @@ class BOApplication : Application(), KodeinAware {
 
 
         bind<BackgroundModeHandler>() with singleton { BackgroundModeHandler(this@BOApplication) }
+        bind<ConsumerContainer<BackgroundModeEvent>>() with singleton { instance<BackgroundModeHandler>().consumerContainer }
+
         bind<LocationHandler>() with singleton {
             LocationHandler(this@BOApplication,
                     backgroundModeHandler = instance(),
